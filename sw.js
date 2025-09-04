@@ -1,6 +1,6 @@
-const CACHE_NAME = 'bina-yemen-v19';
+const CACHE_NAME = 'bina-yemen-v20';
 const ASSETS_TO_CACHE = [
-  '/',
+
   'index.html',
   'bundles.html',
   'rods.html',
