@@ -1,0 +1,10 @@
+{
+  "name": "IronCalculator",
+  "version": "1.0.0",
+  "description": "تطبيق لحساب أسعار الحديد",
+  "scripts": {},
+  "dependencies": {
+    "@capacitor/core": "^5.0.0",
+    "@capacitor/cli": "^5.0.0"
+  }
+}
