@@ -14,3 +14,5 @@ ios-workflow:
       script: |
         npx cap init "IronCalculator" "com.bina.yemen" --web-dir=.
         npx cap sync ios
+  artifacts:
+    - build/**
