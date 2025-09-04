@@ -1,12 +1,11 @@
 
 {
-  "name": "مؤسسة بناء اليمن للتجارة",
-  "short_name": "بناء اليمن",
+  "name": "حاسبة الحديد",
+  "short_name": "مؤسسة بناء اليمن",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#16213e",
-  "theme_color": "#415a77",
-  "orientation": "any",
+  "background_color":"#1b263b",
+  "theme_color": "#0D1729",
   "description": "تطبيق لحساب أسعار الحديد والعمال وصندوق أبو جراح",
   "icons": [
     {
@@ -22,23 +21,10 @@
       "purpose": "any maskable"
     }
   ],
-  "share_target": {
-    "action": "/share-target",
-    "method": "POST",
-    "enctype": "multipart/form-data",
-    "params": {
-      "files": [
-        {
-          "name": "image",
-          "accept": ["image/*"]
-        }
-      ]
-    }
-  },
   "lang": "ar",
   "dir": "rtl",
+  "orientation": "any",
   "categories": ["business", "utilities"],
   "prefer_related_applications": false,
-  "scope": "/",
-  "offline_enabled": true
+  "scope": "/"
 }

@@ -466,7 +466,54 @@
               z-index: 10;
             }
 
-    </style>
+    
+:root {
+  --gather-top: 270px;
+  --gather-left: 53%;
+}
+.logo-wrapper {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+.logo-part {
+  width: 150px;
+  height: 150px;
+  position: absolute;
+  top: var(--gather-top);
+  left: var(--gather-left);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 1;
+  z-index: 10;
+}
+.img-piece {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: 150px 150px;
+  pointer-events: none;
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+  transition: all 1.5s ease;
+}
+.logo-part.gathered .img-piece {
+  filter: brightness(1.5);
+  transition: all 1.5s ease, filter 0.8s ease;
+}
+.logo-part.fixed .img-piece {
+  transition: none;
+}
+.logo-part.exploded .img-piece {
+  opacity: 0;
+  transform: translate(var(--x), var(--y)) scale(0.1) rotate(var(--angle));
+  filter: none;
+}
+
+</style>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="calculator.css">
@@ -474,10 +521,10 @@
 <body>
     <div class="container">
           <div class="logo-wrapper">
-            <img src="IMG_5078.png" class="logo-part part1" />
-            <img src="IMG_5079.png" class="logo-part part2" />
-            <img src="IMG_5080.png" class="logo-part part3" />
-            <img src="IMG_5081.png" class="logo-part part4" />
+            <div class="logo-part part1" data-img="IMG_5078.png"></div>
+            <div class="logo-part part2" data-img="IMG_5079.png"></div>
+            <div class="logo-part part3" data-img="IMG_5080.png"></div>
+            <div class="logo-part part4" data-img="IMG_5081.png"></div>
           </div>
         <button class="back-btn" onclick="window.location.href='index.html'">
             ← العودة للرئيسية
@@ -568,265 +615,165 @@
         </div>
     </div>
 
-    <script>
-        // بيانات البنادل (مثل السابق)
-        const steelData = {
-            bundles: {
-                "20": { weightPerBundle: 1.956, rodsPerBundle: 66 },
-                "18": { weightPerBundle: 1.968, rodsPerBundle: 82 },
-                "16": { weightPerBundle: 1.972, rodsPerBundle: 104 },
-                "14": { weightPerBundle: 1.975, rodsPerBundle: 136 },
-                "12": { weightPerBundle: 1.918, rodsPerBundle: 180 },
-                "10": { weightPerBundle: 1.999, rodsPerBundle: 270 },
-                "8": { weightPerBundle: 1.991, rodsPerBundle: 420 }
-            }
-        };
-
-        // علم عالمي للإشارة إلى استخدام الأرقام العربية في أي حقل
-        window.inputIsArabic = false;
-
-        function formatNumber(num) {
-            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
-
-        // تحويل الأرقام الإنجليزية إلى عربية
-        function toArabicDigits(str) {
-            return str.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
-        }
-
-        // تحويل الرقم إلى نص عربي بالقيمة
-        function numberToArabicWords(number) {
-            const numberParts = number.toString().split('.');
-            const integerPart = Math.floor(number);
-            const decimalPart = numberParts.length > 1 ? numberParts[1].padEnd(2, '0').substring(0, 2) : '00';
-
-            const units = ['', 'واحد', 'اثنان', 'ثلاثة', 'أربعة', 'خمسة', 'ستة', 'سبعة', 'ثمانية', 'تسعة'];
-            const tens = ['', 'عشرة', 'عشرون', 'ثلاثون', 'أربعون', 'خمسون', 'ستون', 'سبعون', 'ثمانون', 'تسعون'];
-            const hundreds = ['', 'مائة', 'مئتان', 'ثلاثمائة', 'أربعمائة', 'خمسمائة', 'ستمائة', 'سبعمائة', 'ثمانمائة', 'تسعمائة'];
-
-            function convertIntegerToWords(num) {
-                if (num === 0) return 'صفر';
-
-                let words = '';
-
-                if (num >= 1000000000) {
-                    const billions = Math.floor(num / 1000000000);
-                    words += (billions === 1 ? 'مليار' :
-                        billions === 2 ? 'ملياران' :
-                            convertIntegerToWords(billions) + ' مليار');
-                    const remainder = num % 1000000000;
-                    if (remainder > 0) {
-                        words += ' و' + convertIntegerToWords(remainder);
-                    }
-                } else if (num >= 1000000) {
-                    const millions = Math.floor(num / 1000000);
-                    words += (millions === 1 ? 'مليون' :
-                        millions === 2 ? 'مليونان' :
-                            convertIntegerToWords(millions) + ' مليون');
-                    const remainder = num % 1000000;
-                    if (remainder > 0) {
-                        words += ' و' + convertIntegerToWords(remainder);
-                    }
-                } else if (num >= 1000) {
-                    const thousands = Math.floor(num / 1000);
-                    words += (thousands === 1 ? 'ألف' :
-                        thousands === 2 ? 'ألفان' :
-                            convertIntegerToWords(thousands) + ' ألف');
-                    const remainder = num % 1000;
-                    if (remainder > 0) {
-                        words += ' و' + convertIntegerToWords(remainder);
-                    }
-                } else if (num >= 100) {
-                    const hundred = Math.floor(num / 100);
-                    words += hundreds[hundred];
-                    const remainder = num % 100;
-                    if (remainder > 0) {
-                        words += ' و' + convertIntegerToWords(remainder);
-                    }
-                } else if (num > 0) {
-                    if (num < 10) {
-                        words += units[num];
-                    } else if (num < 20) {
-                        if (num === 10) words += 'عشرة';
-                        else if (num === 11) words += 'أحد عشر';
-                        else if (num === 12) words += 'اثنا عشر';
-                        else words += units[num % 10] + ' عشر';
-                    } else {
-                        const unit = num % 10;
-                        const ten = Math.floor(num / 10);
-                        if (unit === 0) {
-                            words += tens[ten];
-                        } else {
-                            words += units[unit] + ' و' + tens[ten];
-                        }
-                    }
-                }
-
-                return words;
-            }
-
-            let result = '';
-
-            if (integerPart > 0) {
-                result += convertIntegerToWords(integerPart) + ' ريال سعودي';
-            }
-
-            const decimal = parseInt(decimalPart);
-            if (decimal > 0) {
-                if (result !== '') result += ' و';
-                result += convertIntegerToWords(decimal) + ' هللة';
-            }
-
-            if (result === '') {
-                result = 'صفر ريال سعودي';
-            }
-
-            return result + ' فقط لا غير';
-        }
-
-        function calculateBundles() {
-            // قراءة حقل السعر وكشف الأرقام العربية
-            const rawPrice = document.getElementById('price').value;
-            if (/[٠-٩]/.test(rawPrice)) {
-                window.inputIsArabic = true;
-            }
-            // تحويل الأرقام العربية إلى إنجليزية قبل الحساب
-            const pricePerTon = parseFloat(rawPrice.replace(/[٠-٩]/g, d => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)))) || 3000;
-
-            let totalWeight = 0;
-            let totalPrice = 0;
-            let totalBundles = 0;
-            let totalRods = 0;
-
-            const sizes = ['20', '18', '16', '14', '12', '10', '8'];
-            const resultBody = document.getElementById('bundlesResultBody');
-            resultBody.innerHTML = '';
-
-            // حساب كل مقاس
-            sizes.forEach(size => {
-                const rawCount = document.getElementById('size-' + size).value;
-                if (/[٠-٩]/.test(rawCount)) {
-                    window.inputIsArabic = true;
-                }
-                const bundleCount = parseInt(rawCount.replace(/[٠-٩]/g, d => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)))) || 0;
-
-                if (bundleCount > 0) {
-                    totalBundles += bundleCount;
-                    const bundleData = steelData.bundles[size];
-                    const rodsCount = bundleData.rodsPerBundle * bundleCount;
-                    const weight = (bundleData.weightPerBundle * bundleCount).toFixed(3);
-                    const price = (weight * pricePerTon).toFixed(2);
-
-                    totalWeight += parseFloat(weight);
-                    totalPrice += parseFloat(price);
-                    totalRods += rodsCount;
-
-                    // تحويل القيم للعرض بناءً على اللغة
-                    const displayedSize = window.inputIsArabic ? toArabicDigits(size) : size;
-                    const displayedBundles = window.inputIsArabic ? toArabicDigits(formatNumber(bundleCount)) : formatNumber(bundleCount);
-                    const displayedRods = window.inputIsArabic ? toArabicDigits(formatNumber(rodsCount)) : formatNumber(rodsCount);
-                    const displayedWeight = window.inputIsArabic ? toArabicDigits(weight) : weight;
-                    const displayedPrice = window.inputIsArabic ? toArabicDigits(formatNumber(price)) : formatNumber(price);
-
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${displayedSize} ملم</td>
-                        <td>${displayedBundles}</td>
-                        <td>${displayedRods}</td>
-                        <td>${displayedWeight}</td>
-                        <td>${displayedPrice}</td>
-                    `;
-                    resultBody.appendChild(row);
-                }
-            });
-
-            if (resultBody.children.length === 0) {
-                alert("الرجاء إدخال الكميات أولاً");
-                return;
-            }
-
-            const priceInWords = numberToArabicWords(totalPrice);
-            const fontSize = Math.max(12, 16 - Math.floor(priceInWords.length / 20));
-
-            // تحويل المجاميع للعرض بناءً على اللغة
-            const displayedTotalBundles = window.inputIsArabic ? toArabicDigits(formatNumber(totalBundles)) : formatNumber(totalBundles);
-            const displayedTotalWeight = window.inputIsArabic ? toArabicDigits(totalWeight.toFixed(3)) : totalWeight.toFixed(3);
-            const displayedTotalPrice = window.inputIsArabic ? toArabicDigits(formatNumber(totalPrice.toFixed(2))) : formatNumber(totalPrice.toFixed(2));
-            const displayedNotePrice = window.inputIsArabic ? toArabicDigits(formatNumber(pricePerTon)) : formatNumber(pricePerTon);
-
-            document.getElementById('bundlesTotal').innerHTML = `
-                <div>إجمالي البنادل: ${displayedTotalBundles}</div>
-                <div>الوزن الإجمالي⚖️: ${displayedTotalWeight} طن</div>
-                <div class="total-price">السعر الإجمالي💵: ${displayedTotalPrice} ر.س</div>
-                <div class="price-in-words" style="font-size: ${fontSize}px">${priceInWords}</div>
-            `;
-
-            document.getElementById('bundlesNote').innerText = `ملاحظة: هذا الحساب بسعر ${displayedNotePrice} ريال سعودي للطن`;
-            document.getElementById('bundlesResult').style.display = 'block';
-        }
-
-        function copyBundlesResult() {
-            const resultText = document.getElementById('bundlesResult').innerText;
-            if (resultText && !resultText.includes('الرجاء إدخال الكميات أولاً')) {
-                navigator.clipboard.writeText(resultText)
-                    .then(() => alert("تم نسخ النتيجة"))
-                    .catch(() => alert("فشل نسخ النتيجة"));
-            } else {
-                alert("لا توجد نتيجة لحسابها بعد");
-            }
-        }
-
-        function printResult() {
-            const resultElement = document.getElementById('bundlesResult');
-            if (resultElement.style.display === 'none') {
-                alert("لا توجد نتيجة للطباعة. الرجاء إجراء الحساب أولاً");
-                return;
-            }
-
-            if (typeof html2canvas !== 'function') {
-                const script = document.createElement('script');
-                script.src = 'https://html2canvas.hertzen.com/dist/html2canvas.min.js';
-                script.onload = function() {
-                    captureAndShare(resultElement);
-                };
-                document.body.appendChild(script);
-            } else {
-                captureAndShare(resultElement);
-            }
-        }
-
-        function captureAndShare(element) {
-            html2canvas(element, {
-                backgroundColor: '#16213e',
-                scale: 5
-            }).then(canvas => {
-                const image = canvas.toDataURL('image/png');
-
-                const timestamp = Date.now();
-                caches.open('bina-yemen-v12').then(cache => {
-                    fetch(image)
-                        .then(response => cache.put(`/shared-images/${timestamp}.png`, response));
-                });
-
-                const downloadLink = document.createElement('a');
-                downloadLink.href = image;
-                downloadLink.download = 'حساب_البنادل.png';
-                downloadLink.click();
-
-                if (navigator.share && navigator.onLine) {
-                    canvas.toBlob(function(blob) {
-                        const file = new File([blob], "حساب_البنادل.png", { type: "image/png" });
-                        navigator.share({
-                            title: 'نتيجة حساب البنادل',
-                            files: [file]
-                        }).catch(err => console.log('Error sharing:', err));
-                    });
-                }
-            });
-        }
-    </script>
+    
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <!-- تضمين ملف الآلة الحاسبة الإضافي -->
     <script src="calculator.js"></script>
+
+
+
+
+<script>
+function createFragments(container, imgURL) {
+  const size = 20;
+  const rows = 150 / size;
+  const cols = 150 / size;
+
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      const piece = document.createElement("div");
+      piece.className = "img-piece";
+      piece.style.top = y * size + "px";
+      piece.style.left = x * size + "px";
+      piece.style.backgroundImage = `url(${imgURL})`;
+      piece.style.backgroundPosition = `-${x * size}px -${y * size}px`;
+      container.appendChild(piece);
+    }
+  }
+}
+
+document.querySelectorAll(".logo-part").forEach(part => {
+  const img = part.dataset.img;
+  createFragments(part, img);
+});
+
+function applyExplosion() {
+  document.querySelectorAll(".logo-part").forEach(part => {
+    part.classList.remove("gathered", "fixed", "falling");
+    part.classList.add("exploded");
+    part.querySelectorAll(".img-piece").forEach(piece => {
+      const angle = Math.random() * 2 * Math.PI;
+      const distance = Math.random() * 300 + 100;
+      const x = Math.cos(angle) * distance;
+      const y = Math.sin(angle) * distance;
+      const rotation = Math.floor(Math.random() * 1080) + "deg";
+      piece.style.setProperty("--x", `${x}px`);
+      piece.style.setProperty("--y", `${y}px`);
+      piece.style.setProperty("--angle", rotation);
+    });
+  });
+}
+
+function gather() {
+  document.querySelectorAll(".logo-part").forEach(part => {
+    part.classList.remove("exploded", "fixed", "falling");
+    part.classList.add("gathered");
+    part.querySelectorAll(".img-piece").forEach(piece => {
+      piece.style.setProperty("--x", "0px");
+      piece.style.setProperty("--y", "0px");
+      piece.style.setProperty("--angle", "0deg");
+    });
+  });
+}
+
+function fix() {
+  document.querySelectorAll(".logo-part").forEach(part => {
+    part.classList.remove("exploded", "gathered", "falling");
+    part.classList.add("fixed");
+  });
+}
+
+function fallFromTop() {
+  document.querySelectorAll(".logo-part").forEach(part => {
+    part.classList.remove("exploded", "gathered", "fixed");
+    part.classList.add("falling");
+    part.style.top = "-200px";
+    part.style.opacity = 0;
+    setTimeout(() => {
+      part.style.transition = "top 1s ease, opacity 1s ease";
+      part.style.top = "var(--gather-top)";
+      part.style.opacity = 1;
+    }, 50);
+    setTimeout(() => {
+      part.style.transition = "";
+    }, 1200);
+  });
+}
+
+// تسلسل الحركات
+function runSequence() {
+  gather(); // 1) تجميع
+  setTimeout(() => {
+    fix(); // 2) تثبيت 10 ثواني
+    setTimeout(() => {
+      applyExplosion(); // 3) انفجار
+      setTimeout(() => {
+        fallFromTop(); // 4) نزول من الأعلى
+        setTimeout(() => {
+          fix(); // 5) تثبيت 10 ثواني
+          setTimeout(() => {
+            // 6) اختفاء إلى الأعلى اليسار (نحاكيه بتغيير top/left)
+            document.querySelectorAll(".logo-part").forEach(part => {
+              part.style.transition = "top 1s ease, left 1s ease, opacity 1s ease";
+              part.style.top = "-200px";
+              part.style.left = "0";
+              part.style.opacity = 0;
+              setTimeout(() => {
+                part.style.transition = "";
+              }, 1200);
+            });
+            setTimeout(() => {
+              // 7) توسع وظهور
+              document.querySelectorAll(".logo-part").forEach(part => {
+                part.style.transition = "transform 1s ease, opacity 1s ease";
+                part.style.top = "var(--gather-top)";
+                part.style.left = "var(--gather-left)";
+                part.style.opacity = 1;
+                part.style.transform = "translate(-50%, -50%) scale(1.5)";
+                setTimeout(() => {
+                  part.style.transform = "translate(-50%, -50%) scale(1)";
+                }, 1000);
+                setTimeout(() => {
+                  part.style.transition = "";
+                }, 2000);
+              });
+              setTimeout(() => {
+                fix(); // 8) تثبيت 10 ثواني
+                setTimeout(() => {
+                  // 9) اختفاء تدريجي
+                  document.querySelectorAll(".logo-part").forEach(part => {
+                    part.style.transition = "opacity 1s ease";
+                    part.style.opacity = 0;
+                    setTimeout(() => {
+                      part.style.transition = "";
+                    }, 1000);
+                  });
+                  setTimeout(() => {
+                    // 10) تجميع من التفكك
+                    gather();
+                    setTimeout(() => {
+                      fix(); // 11) تثبيت 10 ثواني
+                      setTimeout(() => {
+                        applyExplosion(); // 12) تفكك كما في الأصل
+                        setTimeout(() => {
+                          runSequence(); // 13) إعادة الدورة
+                        }, 1500);
+                      }, 10000);
+                    }, 1500);
+                  }, 1500);
+                }, 10000);
+              }, 2000);
+            }, 1200);
+          }, 10000);
+        }, 1200);
+      }, 1500);
+    }, 10000);
+  }, 1000);
+}
+
+// بداية أول دورة
+setTimeout(runSequence, 500);
+</script>
+
 </body>
 </html>

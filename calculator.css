@@ -1,0 +1,636 @@
+/* calculator.css */
+
+:root {
+    --primary-dark: #0a1423;
+    --primary: #16213e;
+    --secondary: #415a77;
+    --accent: #778da9;
+    --text: #f0f1f5;
+    --glass-bg: rgba(22, 33, 62, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-highlight: rgba(255, 255, 255, 0.15);
+    --btn-glass: rgba(65, 90, 119, 0.4);
+    --operator-glass: rgba(173, 216, 230, 0.3);
+    --equal-glass: rgba(144, 238, 144, 0.3);
+    --clear-glass: rgba(255, 182, 193, 0.3);
+}
+/* خلفية مظللة */
+/* نافذة النسخة الاحتياطية */
+.backup-modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+    background: var(--glass-bg);
+    backdrop-filter: blur(5px) saturate(180%);
+    -webkit-backdrop-filter: blur(5px) saturate(180%);
+    box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.5);
+  color: #f1f1f1;
+  padding: 20px;
+  border-radius: 10px;
+ 
+  width: 90%;
+  max-width: 500px;
+  direction: ltr;
+}
+.backup-modal::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 0%,
+        var(--glass-highlight) 50%,
+        transparent 100%
+    );
+    animation: shine 8s infinite linear;
+    z-index: -1;
+}
+.backup-modal h3 {
+  margin-top: 0;
+  direction: rtl;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.backup-modal textarea {
+  width: 100%;
+  height: 200px;
+  font-family: monospace;
+    background: rgba(0, 0, 0, 0.2);
+
+    border: 1px solid var(--glass-border);
+  color: #ffe867;
+ 
+  padding: 10px;
+  border-radius: 6px;
+  resize: none;
+  box-sizing: border-box;
+}
+
+.modal-actions {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.modal-actions button {
+  padding: 5px 15px;
+  margin-left: 10px;
+   
+   
+  background: #3a3a3a;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.modal-actions button:hover {
+  background-color: #555;
+}
+.container.calculator-open {
+    transform: translateY(-40%);
+}
+
+.calc-tab {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+    border-radius: 50%;
+    display: flex;
+    font-size: 24px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 1001;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid var(--glass-border);
+    user-select: none;
+}
+
+.calc-tab:hover {
+    transform: translateY(-5px) scale(1.05);
+    background: linear-gradient(135deg, var(--accent), var(--secondary));
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+
+/* تعديل: نثبّتها دائماً في الأسفل (bottom:0; left:0) */
+/* ونستخدم transform: scale للتكبير/التصغير من/إلى نقطة الانبثاق */
+.calculator-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 65%;
+    background: var(--glass-bg);
+    backdrop-filter: blur(5px) saturate(180%);
+    -webkit-backdrop-filter: blur(5px) saturate(180%);
+    box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.5);
+    border-top: 1px solid var(--glass-border);
+    z-index: 1000;
+    transform: scale(0);
+    /* القيمة الابتدائية لنقطة الأصل على منتصف العرض وأسفل الحاوية */
+    transform-origin: 50% 100%;
+    opacity: 0;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px 20px 0 0;
+    overflow: hidden; /* لإخفاء أي تجاوز */
+}
+
+/* تأثير اللمعان */
+.calculator-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 0%,
+        var(--glass-highlight) 50%,
+        transparent 100%
+    );
+    animation: shine 8s infinite linear;
+    z-index: -1;
+}
+
+.calculator-container.open {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.calculator-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.calculator-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.calculator-close {
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* ===== الحاوية التي تضمّ كافة شاشات العمليات ===== */
+.calc-screens-container {
+    flex-grow: 1;
+    overflow-y: auto;  /* تمرير عمودي للشاشات السابقة */
+    padding-right: 5px; /* مساحة للسكربار */
+}
+
+/* كل شاشة عملية تتكوّن من سطرين: */
+.calc-screen {
+    margin-bottom: 10px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    border: 1px solid var(--glass-border);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* فاصل بين الشاشات */
+.screen-separator {
+    border-bottom: 1px dashed var(--glass-border);
+    margin: 10px 0;
+}
+
+/* سطر إدخال العملية (يسمح بالتمرير الأفقي) */
+.screen-display-container {
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    direction: ltr;
+    padding: 5px 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) var(--primary-dark);
+    cursor: text; /* يظهر مؤشر الكتابة */
+    user-select: text;
+}
+
+.screen-display-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.screen-display-container::-webkit-scrollbar-thumb {
+    background-color: var(--accent);
+    border-radius: 4px;
+    border: 2px solid var(--primary-dark);
+}
+
+.screen-display-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+/* تنسيق نص الإدخال نفسه */
+.screen-display {
+    font-size: 22px;
+    text-align: left;
+    color: var(--text);
+    min-height: 30px;
+    direction: ltr;
+    display: inline-block;
+    min-width: 100%;
+    padding-right: 10px;
+    box-sizing: border-box;
+    font-family: monospace;
+}
+
+/* مؤشر الكتابة الوهمي */
+.fake-caret {
+    display: inline-block;
+    width: 2px;
+    height: 1.2em;
+    background-color: #f0f1f5;
+    animation: blink 1s step-end infinite;
+    vertical-align: middle;
+    margin: 0 1px;
+    position: relative;
+}
+
+@keyframes blink {
+    from, to { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* سطر العرض النهائي للنتيجة (ثابت على يمين الشاشة) */
+.screen-result {
+    font-size: 20px;
+    text-align: right;
+    color: var(--accent);
+    min-height: 25px;
+    direction: ltr;
+    margin-top: 5px;
+    padding-right: 5px;
+    user-select: text;
+    font-family: monospace;
+    font-weight: bold;
+}
+
+/* ===== أنماط إضافية لأزرار الحاسبة كما كانت ===== */
+.calculator-buttons {
+    flex-shrink: 0;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-top: 0px;
+    margin-bottom: 20px;
+}
+
+.calc-button {
+    height: 60px;
+    font-size: 30px;
+    border: none;
+    border-radius: 15px;
+    background: rgba(12, 45, 87, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 
+        0 4px 6px rgba(0, 0, 0, 0.1),
+        inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.calc-button:hover {
+    background: rgba(12, 45, 87, 0.8);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 6px 12px rgba(0, 0, 0, 0.15),
+        inset 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+.calc-button:active {
+    transform: translateY(1px);
+    animation: shake 0.15s linear;
+}
+
+.calc-button.operator {
+    background: rgba(65, 90, 119, 0.7) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.calc-button.operator:hover {
+    background: rgba(65, 90, 119, 0.9) !important;
+}
+
+.calc-button.equal {
+    background: rgba(46, 125, 50, 0.7) !important;
+}
+
+.calc-button.equal:hover {
+    background: rgba(46, 125, 50, 0.9) !important;
+}
+
+.calc-button.clear,
+.calc-button.function[onclick="deleteLastChar()"] {
+    background: rgba(192, 57, 43, 0.7) !important;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.calc-button.clear:hover,
+.calc-button.function[onclick="deleteLastChar()"]:hover {
+    background: rgba(192, 57, 43, 0.9) !important;
+}
+
+.calc-button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0) 50%
+    );
+    border-radius: 10px;
+    pointer-events: none;
+}
+
+.calc-button.active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2) inset;
+}
+
+/* تأثير الاهتزاز */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    75% { transform: translateX(3px); }
+}
+
+.equal:active {
+    animation: shake 0.2s linear;
+    background-color: #4CAF50 !important;
+    transform: scale(0.97);
+}
+
+/* ===== أنماط الأزرار الصغيرة للتحكم بالمؤشر ===== */
+.arrow-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 6px;
+}
+
+.arrow-row {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+}
+
+.arrow-btn {
+    width: 45px;
+    height: 26px;
+    border-radius: 20px;
+    background: rgb(0, 26, 71, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #e0e0e0;
+    box-shadow: 
+        0 4px 6px rgba(0, 0, 0, 0.1),
+        inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.arrow-btn:hover {
+    background: rgba(12, 45, 87, 0.8);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 6px 12px rgba(0, 0, 0, 0.15),
+        inset 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+.arrow-btn:active {
+    transform: scale(0.95);
+    background: rgba(12, 45, 87, 0.8);
+}
+
+.arrow-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0) 50%
+    );
+    border-radius: 20px;
+    pointer-events: none;
+}
+
+/* ===== تنسيقات استجابة للشاشات الصغيرة ===== */
+@media (max-width: 768px) {
+    .calc-button {
+        backdrop-filter: blur(8px);
+        height: 55px;
+    }
+    .history-panel {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--primary-dark);
+        backdrop-filter: blur(10px);
+        z-index: 1002;
+        padding: 20px;
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+        overflow-y: auto;
+    }
+    .history-panel.open {
+        transform: translateY(0);
+    }
+}
+
+/* ===== أنماط الأرشيف ===== */
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.history-title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.history-close {
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.history-item {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    transition: background 0.3s;
+}
+
+.history-item:hover {
+    background: rgba(255,255,255,0.05);
+}
+
+.history-calculation {
+    font-size: 18px;
+    margin-bottom: 5px;
+    direction: ltr;
+    text-align: left;
+}
+
+.history-calculation .expr {
+    color: var(--text);
+}
+
+.history-calculation .equals {
+    color: var(--accent);
+}
+
+.history-calculation .result {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.history-date {
+    font-size: 12px;
+    color: var(--accent);
+    text-align: right;
+}
+
+.history-use-btn {
+    background: transparent;
+    border: none;
+    color: var(--accent);
+    float: left;
+    cursor: pointer;
+    padding: 5px;
+}
+
+/* يمنع التكبير عند الضغط المزدوج أو اللمس */
+.calc-tab,
+.calculator-container,
+.calc-button,
+.arrow-btn {
+    touch-action: manipulation;
+    -ms-touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* يمنع تحديد النص داخل الحاسبة بالكامل */
+.calculator-container * {
+    -webkit-user-select: none !important;
+    user-select: none !important;
+}
+
+/* يمنع التكبير عند الضغط المزدوج على بقية الصفحة */
+html,
+body {
+    touch-action: manipulation;
+    -ms-touch-action: manipulation;
+}
+
+/* ========= أنماط CSS للأزرار الجديدة والوظائف الرسومية فقط ========= */
+fraction {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 2px;
+}
+
+/* تنسيق مربّع البسط/المقام */ 
+.fraction input {
+    width: 30px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--text);
+    color: var(--text);
+    text-align: center;
+    font-size: 0.9em;
+    outline: none;
+    padding: 0 2px;
+    margin: 0;
+}
+
+/* الخط الفاصل بين البسط والمقام (مجرّد خط سميك جداً) */
+.fraction .divider {
+    width: 100%;
+    height: 1px;
+    background-color: var(--text);
+    margin: 2px 0;
+}
+
+/* تأثير Shine */
+@keyframes shine {
+    0% { transform: rotate(0deg) translateX(0); }
+    100% { transform: rotate(360deg) translateX(0); }
+}
+/* الشعار */
+.result-logo1 {
+  position: absolute;
+  top: 3px;     /* ← المسافة من الأعلى */
+  right: 150px;   /* ← المسافة من اليمين */
+  height: 50px;
+  z-index: 10;
+}
+
+/* اسم المؤسسة */
+.result-inst1 {
+  position: absolute;
+  top:15px;     /* ← المسافة من الأعلى (أسفل الشعار) */
+  right: 210px;    /* ← المسافة من اليمين */
+  font: bold 10px 'Tajawal', sans-serif;
+  color: #f0f1f5;
+  line-height: 1.4;
+  text-align: right;
+  z-index: 10;
+}

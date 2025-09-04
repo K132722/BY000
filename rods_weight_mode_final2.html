@@ -50,7 +50,7 @@
             position: relative;
             overflow: hidden;
         }
-
+       
         .container::before {
             content: '';
             position: absolute;
@@ -115,11 +115,11 @@
           /* 2) لمعان سريع (6.67–8.89% = 1s) */
           7.78% {
                filter: none;
-
+            
           }
           8.89% {
                filter: brightness(1.5);
-
+            
           }
 
           /* 3) تثبيت أول (8.89–31.11% = 10s) */
@@ -143,10 +143,10 @@
             left: var(--gather-left);
             opacity: 1;
             transform: translate(-50%, -50%) scale(1);}
-
-
-
-
+                
+          
+                
+          
 
           /* 5) حركة ارتداد (37.78–40% = 1s) */
           39% {
@@ -609,7 +609,7 @@
               z-index: 10;
             }
         /* أنماط حاوية جريد 60 */
-
+      
 
         .gr60-container .form-group {
             margin-bottom: 10px;
@@ -670,32 +670,33 @@
         <!-- حوّلنا حقول الكمية إلى نصية للسماح بالأرقام العربية والإنجليزية -->
         <div class="form-group">
             <label for="rod-20">20 ملم</label>
-            <input type="text" id="rod-20" placeholder="0" pattern="[0-9٠-٩\.]*" inputmode="decimal">
+            <input type="text" id="rod-20" placeholder="0" pattern="[0-9٠-٩]*" inputmode="numeric">
         </div>
         <div class="form-group">
             <label for="rod-18">18 ملم</label>
-            <input type="text" id="rod-18" placeholder="0" pattern="[0-9٠-٩\.]*" inputmode="decimal">
+            <input type="text" id="rod-18" placeholder="0" pattern="[0-9٠-٩]*" inputmode="numeric">
         </div>
         <div class="form-group">
             <label for="rod-16">16 ملم</label>
-            <input type="text" id="rod-16" placeholder="0" pattern="[0-9٠-٩\.]*" inputmode="decimal">
+            <input type="text" id="rod-16" placeholder="0" pattern="[0-9٠-٩]*" inputmode="numeric">
         </div>
         <div class="form-group">
             <label for="rod-14">14 ملم</label>
-            <input type="text" id="rod-14" placeholder="0" pattern="[0-9٠-٩\.]*" inputmode="decimal">
+            <input type="text" id="rod-14" placeholder="0" pattern="[0-9٠-٩]*" inputmode="numeric">
         </div>
         <div class="form-group">
             <label for="rod-12">12 ملم</label>
-            <input type="text" id="rod-12" placeholder="0" pattern="[0-9٠-٩\.]*" inputmode="decimal">
+            <input type="text" id="rod-12" placeholder="0" pattern="[0-9٠-٩]*" inputmode="numeric">
         </div>
         <div class="form-group">
             <label for="rod-10">10 ملم</label>
-            <input type="text" id="rod-10" placeholder="0" pattern="[0-9٠-٩\.]*" inputmode="decimal">
+            <input type="text" id="rod-10" placeholder="0" pattern="[0-9٠-٩]*" inputmode="numeric">
         </div>
         <div class="form-group">
             <label for="rod-8">8 ملم</label>
-            <input type="text" id="rod-8" placeholder="0" pattern="[0-9٠-٩\.]*" inputmode="decimal">
+            <input type="text" id="rod-8" placeholder="0" pattern="[0-9٠-٩]*" inputmode="numeric">
         </div>
+
         <!-- زر إضافة صنف جديد -->
         <button class="add-item-btn" onclick="showAddItemDialog()">
             <span style="font-size: 18px;">＋</span> إضافة (مقاسات جريد ٦٠ او سلك تربيط)
@@ -798,14 +799,7 @@
         let customItems = [];
         let wireItems = [];
         let inventoryMode = false;
-        // تحت السطور اللي فيها:
-        // let customItems = [];
-        // let wireItems = [];
-
-        let weightMode = false;               // ← وضع الحساب بالأوزن
-
-        const weightCode   = '2';           // ← الكود اللي يفعل الحساب بالأوزن
-        const passwordCode = '1';
+        const passwordCode = '000';
         let customPricePerTon = 0;
 
         window.inputIsArabic = false;
@@ -906,84 +900,51 @@
 
             return result + ' فقط لا غير';
         }
-        function toEnglishDigits(input) {
-          return input.replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
-        }
-        function toggleMode() {
-            const input = toEnglishDigits(document.getElementById('rodPrice').value.trim());
 
-            // 1) كود المخزون
+        function toggleInventoryMode() {
+            const input = document.getElementById('rodPrice').value.trim();
             if (input === passwordCode) {
                 inventoryMode = !inventoryMode;
-                weightMode = false;  // يطفي وضع الأوزان لو مفعل
-                // تحديث العنوان والعناوين
+
                 if (inventoryMode) {
                     document.title = 'حساب المخزون';
                     document.querySelector('.result-title').textContent = 'نتيجة حساب المخزون';
                     document.querySelector('h1').childNodes[0].nodeValue = 'حساب المخزون ';
                     const ths = document.querySelectorAll('#rodsResult thead th');
-                    ths[0].textContent = 'المقاس';
-                    ths[1].textContent = 'عدد البنادل';
-                    ths[2].textContent = 'عدد الأسياخ';
-                    ths[3].textContent = 'الوزن (طن)';
+                    if (ths.length >= 4) {
+                        ths[0].textContent = 'المقاس';
+                        ths[1].textContent = 'عدد البنادل';
+                        ths[2].textContent = 'عدد الأسياخ';
+                        ths[3].textContent = 'الوزن (طن)';
+                    }
                     alert('تم تفعيل وضع حساب المخزون');
                 } else {
-                    // ترجع لوضع الأسياخ العادي
                     document.title = 'حاسبة الأسياخ';
                     document.querySelector('.result-title').textContent = 'نتيجة حساب الأسياخ';
                     document.querySelector('h1').childNodes[0].nodeValue = 'حاسبة الأسياخ ';
                     const ths = document.querySelectorAll('#rodsResult thead th');
-                    ths[0].textContent = 'المقاس';
-                    ths[1].textContent = 'العدد';
-                    ths[2].textContent = 'الكمية بالطن';
-                    ths[3].textContent = 'السعر';
+                    if (ths.length >= 4) {
+                        ths[0].textContent = 'المقاس';
+                        ths[1].textContent = 'العدد';
+                        ths[2].textContent = 'الكمية بالطن';
+                        ths[3].textContent = 'السعر';
+                    }
                     alert('تم إيقاف وضع حساب المخزون');
                 }
+
                 document.getElementById('rodPrice').value = '';
                 return true;
             }
-
-            // 2) كود الحساب بالأوزن
-            if (input === weightCode) {
-                weightMode = !weightMode;
-                inventoryMode = false; // يطفي وضع المخزون لو مفعل
-                if (weightMode) {
-                    document.title = 'الحساب بالأوزن (كجم)';
-                    document.querySelector('.result-title').textContent = 'نتيجة الحساب';
-                    document.querySelector('h1').childNodes[0].nodeValue = 'الحساب بالأوزن ';
-                    const ths = document.querySelectorAll('#rodsResult thead th');
-                    ths[0].textContent = 'المقاس';
-                    ths[1].textContent = 'عدد الأسياخ';
-                    ths[2].textContent = 'الكمية بالطن';
-                    ths[3].textContent = 'السعر';
-                    alert('تم تفعيل وضع الحساب بالأوزن');
-                } else {
-                    // ترجع لوضع الأسياخ العادي
-                    document.title = 'حاسبة الأسياخ';
-                    document.querySelector('.result-title').textContent = 'نتيجة حساب الأسياخ';
-                    document.querySelector('h1').childNodes[0].nodeValue = 'حاسبة الأسياخ ';
-                    const ths = document.querySelectorAll('#rodsResult thead th');
-                    ths[0].textContent = 'المقاس';
-                    ths[1].textContent = 'العدد';
-                    ths[2].textContent = 'الكمية بالطن';
-                    ths[3].textContent = 'السعر';
-                    alert('تم إيقاف وضع الحساب بالأوزن');
-                }
-                document.getElementById('rodPrice').value = '';
-                return true;
-            }
-
             return false;
         }
 
         function calculateRods() {
-            if (toggleMode()) return;           // يلتقط كود 000 أو 111
-            if (inventoryMode) {
-                calculateInventory();
+            if (toggleInventoryMode()) {
                 return;
             }
-            if (weightMode) {
-                calculateWeightMode();
+
+            if (inventoryMode) {
+                calculateInventory();
                 return;
             }
 
@@ -1286,134 +1247,7 @@
             localStorage.setItem('showRodsResult', 'true');
             localStorage.setItem('inventoryMode', 'true');
         }
-        function calculateWeightMode() {
-            const rawPricePerTon = document.getElementById('rodPrice').value.trim();
-            const pricePerTon = parseFloat(
-                rawPricePerTon.replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
-            ) || 400000;
 
-            const sizes = ['20','18','16','14','12','10','8'];
-            const tbody = document.getElementById('rodsResultBody');
-            tbody.innerHTML = '';
-
-            let totalSum = 0, totalWeightTon = 0;
-
-            // إجماليات فرعية
-            let hasBasic = false, hasCustom = false;
-            let basicWeight = 0, basicSum = 0;
-            let customWeight = 0, customSum = 0;
-
-            // 🔹 حساب الأسياخ القياسية (جريد 40)
-            sizes.forEach(size => {
-                const rawTon = document.getElementById('rod-' + size).value.trim();
-                const inputTon = parseFloat(rawTon.replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))) || 0;
-                if (inputTon <= 0) return;
-
-                hasBasic = true;
-                const rodsPerTon = steelData.rods[size];
-                const count = Math.floor(inputTon * rodsPerTon);
-                const realTon = count / rodsPerTon;
-                const pricePerRod = pricePerTon / rodsPerTon;
-                const totalPrice = pricePerRod * count;
-
-                basicWeight += realTon;
-                basicSum += totalPrice;
-                totalWeightTon += realTon;
-                totalSum += totalPrice;
-
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${window.inputIsArabic ? toArabicDigits(size) : size} ملم</td>
-                    <td>${window.inputIsArabic ? toArabicDigits(count) : count}</td>
-                    <td>${window.inputIsArabic ? toArabicDigits(realTon.toFixed(3)) : realTon.toFixed(3)}</td>
-                    <td>${window.inputIsArabic ? toArabicDigits(formatNumber(totalPrice.toFixed(2))) : formatNumber(totalPrice.toFixed(2))} ر.ي</td>
-                `;
-                tbody.appendChild(row);
-            });
-
-            // 🔸 حساب الأسياخ المضافة (جريد 60)
-            customItems.forEach(item => {
-                const rodsPerTon = steelData.rods[item.size];
-                const inputTon = item.qty; // هنا نعتبر الكمية المُدخلة هي بالطن
-                if (inputTon <= 0) return;
-
-                hasCustom = true;
-                const count = Math.floor(inputTon * rodsPerTon);
-                const realTon = count / rodsPerTon;
-                const pricePerRod = item.price / rodsPerTon;
-                const totalPrice = pricePerRod * count;
-
-                customWeight += realTon;
-                customSum += totalPrice;
-                totalWeightTon += realTon;
-                totalSum += totalPrice;
-
-                const row = document.createElement('tr');
-                row.style.background = 'rgba(151, 192, 154, 0.1)';
-                row.innerHTML = `
-                    <td>${item.size} ملم جريد ٦٠</td>
-                    <td>${window.inputIsArabic ? toArabicDigits(count) : count}</td>
-                    <td>${window.inputIsArabic ? toArabicDigits(realTon.toFixed(3)) : realTon.toFixed(3)}</td>
-                    <td>${window.inputIsArabic ? toArabicDigits(formatNumber(totalPrice.toFixed(2))) : formatNumber(totalPrice.toFixed(2))} ر.ي</td>
-                `;
-                tbody.appendChild(row);
-            });
-
-            // 🧵 سلك التربيط
-            let wireTotal = 0;
-            wireItems.forEach(item => {
-                wireTotal += item.qty * item.price;
-            });
-            totalSum += wireTotal;
-
-            // ⛔ تحقّق أنه فيه بيانات
-            if (!tbody.children.length && wireTotal === 0) {
-                alert('الرجاء إدخال كميات بالطن أولاً');
-                return;
-            }
-
-            // 🧠 تحويل السعر إلى كلمات
-            const priceInWords = numberToArabicWords(totalSum);
-
-            // 📋 إعداد الملاحظات والإجماليات التفصيلية
-            let breakdownHtml = '';
-            if (hasBasic && hasCustom) {
-                breakdownHtml = `
-                    <div style="display:flex;justify-content:space-between;color:#deba7a;margin-bottom:4px">
-                      <div>جريد ٤٠: ${basicWeight.toFixed(3)} طن</div>
-                      <div>${formatNumber(basicSum.toFixed(2))} ر.ي</div>
-                    </div>
-                    <div style="display:flex;justify-content:space-between;color:#deba7a;margin-bottom:4px">
-                      <div>جريد ٦٠: ${customWeight.toFixed(3)} طن</div>
-                      <div>${formatNumber(customSum.toFixed(2))} ر.ي</div>
-                    </div>
-                `;
-            }
-
-            const wireNote = wireItems.length
-                ? `<div>إجمالي سلك التربيط: ${window.inputIsArabic ? toArabicDigits(wireItems.reduce((s, i) => s + i.qty, 0)) : wireItems.reduce((s, i) => s + i.qty, 0)} لفة</div>`
-                : '';
-
-            const priceNote = hasBasic && hasCustom
-                ? `ملاحظة: الحساب بسعر ${formatNumber(pricePerTon)} ر.ي/طن للقياسي و${formatNumber(customItems[0].price)} ر.ي/طن للجريد ٦٠`
-                : hasBasic
-                    ? `ملاحظة: الحساب بسعر ${formatNumber(pricePerTon)} ر.ي/طن`
-                    : hasCustom
-                        ? `ملاحظة: الحساب بسعر ${formatNumber(customItems[0].price)} ر.ي/طن`
-                        : '';
-
-            // 🎯 عرض النتائج
-            document.getElementById('rodsTotal').innerHTML = `
-                ${breakdownHtml}
-                <div>إجمالي الكمية بالطن ⚖️: ${totalWeightTon.toFixed(3)} طن</div>
-                ${wireNote}
-                <div class="total-price">إجمالي سعر الكمية💵: ${formatNumber(totalSum.toFixed(2))} ر.ي</div>
-                <div class="price-in-words">${priceInWords}</div>
-            `;
-            document.getElementById('rodsNote').innerText = priceNote;
-            document.getElementById('rodsResult').style.display = 'block';
-        }
-        
         function showAddItemDialog() {
             document.getElementById('dialogOverlay').style.display = 'flex';
             document.getElementById('itemType').dispatchEvent(new Event('change'));
@@ -1444,31 +1278,31 @@
                     <div class="gr60-container">
                         <div class="form-group">
                             <label>20 ملم جريد ٦٠</label>
-                            <input type="text" id="gr60-20" placeholder="0" pattern="[0-9٠-٩\.]*" inputmode="decimal">
+                            <input type="text" id="gr60-20" placeholder="0" pattern="[0-9٠-٩]*" inputmode="numeric">
                         </div>
                         <div class="form-group">
                             <label>18 ملم جريد ٦٠</label>
-                            <input type="text" id="gr60-18" placeholder="0" pattern="[0-9٠-٩\.]*" inputmode="decimal">
+                            <input type="text" id="gr60-18" placeholder="0" pattern="[0-9٠-٩]*" inputmode="numeric">
                         </div>
                         <div class="form-group">
                             <label>16 ملم جريد ٦٠</label>
-                            <input type="text" id="gr60-16" placeholder="0" pattern="[0-9٠-٩\.]*" inputmode="decimal">
+                            <input type="text" id="gr60-16" placeholder="0" pattern="[0-9٠-٩]*" inputmode="numeric">
                         </div>
                         <div class="form-group">
                             <label>14 ملم جريد ٦٠</label>
-                            <input type="text" id="gr60-14" placeholder="0" pattern="[0-9٠-٩\.]*" inputmode="decimal">
+                            <input type="text" id="gr60-14" placeholder="0" pattern="[0-9٠-٩]*" inputmode="numeric">
                         </div>
                         <div class="form-group">
                             <label>12 ملم جريد ٦٠</label>
-                            <input type="text" id="gr60-12" placeholder="0" pattern="[0-9٠-٩\.]*" inputmode="decimal">
+                            <input type="text" id="gr60-12" placeholder="0" pattern="[0-9٠-٩]*" inputmode="numeric">
                         </div>
                         <div class="form-group">
                             <label>10 ملم جريد ٦٠</label>
-                            <input type="text" id="gr60-10" placeholder="0" pattern="[0-9٠-٩\.]*" inputmode="decimal">
+                            <input type="text" id="gr60-10" placeholder="0" pattern="[0-9٠-٩]*" inputmode="numeric">
                         </div>
                         <div class="form-group">
                             <label>8 ملم جريد ٦٠</label>
-                            <input type="text" id="gr60-8" placeholder="0" pattern="[0-9٠-٩\.]*" inputmode="decimal">
+                            <input type="text" id="gr60-8" placeholder="0" pattern="[0-9٠-٩]*" inputmode="numeric">
                         </div>
 
                         <div class="form-group price-input">
@@ -1518,18 +1352,13 @@
                 return;
             }
 
-            // إزالة العناصر السابقة لنفس السعر
+            // إزالة العناصر المضافة سابقاً لنفس السعر
             customItems = customItems.filter(item => item.price !== price);
 
             const sizes = ['20', '18', '16', '14', '12', '10', '8'];
             sizes.forEach(size => {
                 const rawQty = document.getElementById('gr60-' + size).value;
-
-                const qty = parseFloat(
-                    rawQty
-                        .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
-                        .replace(/[،٫]/g, '.')
-                ) || 0;
+                const qty = parseInt(rawQty.replace(/[٠-٩]/g, d => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)))) || 0;
 
                 if (qty > 0) {
                     customItems.push({ size, qty, price });
@@ -1547,20 +1376,12 @@
         function updateCustomItemsDisplay() {
             const container = document.getElementById('additionalItemsContainer');
             container.innerHTML = customItems.map((item, index) => {
-                const qtyFixed = parseFloat(
-                    String(item.qty)
-                        .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
-                        .replace(/[،٫]/g, '.')
-                ).toFixed(3);
-
-                const displayedQty = window.inputIsArabic ? toArabicDigits(qtyFixed) : qtyFixed;
-
+                const displayedQty = window.inputIsArabic ? toArabicDigits(item.qty) : item.qty;
                 return `
                     <div class="form-group custom-item" data-index="${index}">
                         <label>${item.size} ملم جريد ٦٠</label>
                         <input type="text" value="${displayedQty}" disabled>
-                        <button onclick="removeCustomItem(${index})"
-                            style="background: transparent; border: none; color: #ff6b6b; margin-right: 5px; font-size: 16px;">×</button>
+                        <button onclick="removeCustomItem(${index})" style="background: transparent; border: none; color: #ff6b6b; margin-right: 5px; font-size: 16px;">×</button>
                     </div>
                 `;
             }).join('');
@@ -1634,24 +1455,21 @@
         }
 
         window.addEventListener('load', () => {
-            // ← نطفي أي أوضاع أخرى
-            inventoryMode = false;
-            weightMode = false;
-
-            // ← نضبط العناوين لحاسبة الأسياخ
-            document.title = 'حاسبة الأسياخ';
-            document.querySelector('.result-title').textContent = 'نتيجة حساب الأسياخ';
-            document.querySelector('h1').childNodes[0].nodeValue = 'حاسبة الأسياخ ';
-
-            const ths = document.querySelectorAll('#rodsResult thead th');
-            if (ths.length >= 4) {
-                ths[0].textContent = 'المقاس';
-                ths[1].textContent = 'العدد';
-                ths[2].textContent = 'الكمية بالطن';
-                ths[3].textContent = 'السعر';
+            const savedMode = localStorage.getItem('inventoryMode') === 'true';
+            if (savedMode) {
+                inventoryMode = true;
+                document.title = 'حساب المخزون';
+                document.querySelector('.result-title').textContent = 'نتيجة حساب المخزون';
+                document.querySelector('h1').childNodes[0].nodeValue = 'حساب المخزون ';
+                const ths = document.querySelectorAll('#rodsResult thead th');
+                if (ths.length >= 4) {
+                    ths[0].textContent = 'المقاس';
+                    ths[1].textContent = 'عدد البنادل';
+                    ths[2].textContent = 'عدد الأسياخ';
+                    ths[3].textContent = 'الوزن (طن)';
+                }
             }
 
-            // ← تحميل النتائج السابقة إن وجدت
             if (localStorage.getItem('showRodsResult') === 'true') {
                 const savedHtml = localStorage.getItem('savedRodsResult');
                 if (savedHtml) {
@@ -1663,9 +1481,6 @@
                 localStorage.removeItem('savedRodsResult');
                 localStorage.removeItem('showRodsResult');
             }
-
-            // ← تنظيف وضع المخزون لو محفوظ
-            localStorage.removeItem('inventoryMode');
         });
 
         function printResult() {

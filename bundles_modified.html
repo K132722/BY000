@@ -466,7 +466,54 @@
               z-index: 10;
             }
 
-    </style>
+    
+:root {
+  --gather-top: 270px;
+  --gather-left: 53%;
+}
+.logo-wrapper {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+.logo-part {
+  width: 150px;
+  height: 150px;
+  position: absolute;
+  top: var(--gather-top);
+  left: var(--gather-left);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 1;
+  z-index: 10;
+}
+.img-piece {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: 150px 150px;
+  pointer-events: none;
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+  transition: all 1.5s ease;
+}
+.logo-part.gathered .img-piece {
+  filter: brightness(1.5);
+  transition: all 1.5s ease, filter 0.8s ease;
+}
+.logo-part.fixed .img-piece {
+  transition: none;
+}
+.logo-part.exploded .img-piece {
+  opacity: 0;
+  transform: translate(var(--x), var(--y)) scale(0.1) rotate(var(--angle));
+  filter: none;
+}
+
+</style>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="calculator.css">
@@ -474,10 +521,10 @@
 <body>
     <div class="container">
           <div class="logo-wrapper">
-            <img src="IMG_5078.png" class="logo-part part1" />
-            <img src="IMG_5079.png" class="logo-part part2" />
-            <img src="IMG_5080.png" class="logo-part part3" />
-            <img src="IMG_5081.png" class="logo-part part4" />
+            <div class="logo-part part1" data-img="IMG_5078.png"></div>
+            <div class="logo-part part2" data-img="IMG_5079.png"></div>
+            <div class="logo-part part3" data-img="IMG_5080.png"></div>
+            <div class="logo-part part4" data-img="IMG_5081.png"></div>
           </div>
         <button class="back-btn" onclick="window.location.href='index.html'">
             ← العودة للرئيسية
@@ -828,5 +875,82 @@
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <!-- تضمين ملف الآلة الحاسبة الإضافي -->
     <script src="calculator.js"></script>
+
+<script>
+function createFragments(container, imgURL) {
+  const size = 20;
+  const rows = 150 / size;
+  const cols = 150 / size;
+
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      const piece = document.createElement("div");
+      piece.className = "img-piece";
+      piece.style.top = y * size + "px";
+      piece.style.left = x * size + "px";
+      piece.style.backgroundImage = `url(${imgURL})`;
+      piece.style.backgroundPosition = `-${x * size}px -${y * size}px`;
+      container.appendChild(piece);
+    }
+  }
+}
+
+document.querySelectorAll(".logo-part").forEach(part => {
+  const img = part.dataset.img;
+  createFragments(part, img);
+});
+
+function explodeAll() {
+  document.querySelectorAll(".logo-part").forEach(part => {
+    part.classList.remove("gathered", "fixed");
+    part.classList.add("exploded");
+    part.querySelectorAll(".img-piece").forEach(piece => {
+      const angle = Math.random() * 2 * Math.PI;
+      const distance = Math.random() * 300 + 100;
+      const x = Math.cos(angle) * distance;
+      const y = Math.sin(angle) * distance;
+      const rotation = Math.floor(Math.random() * 1080) + "deg";
+      piece.style.setProperty("--x", `${x}px`);
+      piece.style.setProperty("--y", `${y}px`);
+      piece.style.setProperty("--angle", rotation);
+    });
+  });
+}
+
+function gatherAll() {
+  document.querySelectorAll(".logo-part").forEach(part => {
+    part.classList.remove("exploded", "fixed");
+    part.classList.add("gathered");
+    part.querySelectorAll(".img-piece").forEach(piece => {
+      piece.style.setProperty("--x", "0px");
+      piece.style.setProperty("--y", "0px");
+      piece.style.setProperty("--angle", "0deg");
+    });
+  });
+}
+
+function fixAll() {
+  document.querySelectorAll(".logo-part").forEach(part => {
+    part.classList.remove("exploded", "gathered");
+    part.classList.add("fixed");
+  });
+}
+
+// التجمع الأول
+setTimeout(() => {
+  gatherAll();
+  setTimeout(() => fixAll(), 10000); // تثبيت 10 ثواني
+}, 500);
+
+// دورة كل 50 ثانية: انفجار -> تجميع -> تثبيت
+setInterval(() => {
+  explodeAll();
+  setTimeout(() => {
+    gatherAll();
+    setTimeout(() => fixAll(), 10000);
+  }, 1500);
+}, 50000);
+</script>
+
 </body>
 </html>

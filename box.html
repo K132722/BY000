@@ -18,6 +18,10 @@
             --debit-color: #ff6b6b;
             --credit-color: #51cf66;
             --btn-glass: rgba(65, 90, 119, 0.4);
+            --edit-color: #4dabf7;
+            --share-color: #40c057;
+            --disabled-color: #868e96;
+            --delete-color: #ff8787;
         }
 
         * {
@@ -34,7 +38,8 @@
             background-size: cover;
             min-height: 100vh;
             color: var(--text);
-            padding: 20px;
+            direction: rtl;
+            padding: 15px;
         }
 
         .container {
@@ -44,7 +49,7 @@
             backdrop-filter: blur(16px) saturate(180%);
             -webkit-backdrop-filter: blur(16px) saturate(180%);
             border-radius: 20px;
-            padding: 30px;
+            padding: 20px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
             border: 1px solid var(--glass-border);
             position: relative;
@@ -75,33 +80,31 @@
 
         .back-btn {
             background: var(--btn-glass);
-            border: 1px solid var(--accent);
+            border: 1px solid var(--glass-border);
             color: white;
-            padding: 12px 0;
+            padding: 10px 0;
             width: 100%;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border-radius: 14px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.4s;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
         }
 
         .back-btn:hover {
-            background: rgba(119, 141, 169, 0.4);
-            transform: translateY(-2px);
+            background: rgba(65, 90, 119, 0.6);
         }
-
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
             flex-wrap: wrap;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
         }
 
         h1 {
@@ -123,7 +126,7 @@
             margin-bottom: 10px;
         }
 
-        .history-btn {
+        .history-btn, .new-window-btn {
             background: var(--secondary);
             border: none;
             color: white;
@@ -131,12 +134,11 @@
             font-size: 14px;
             border-radius: 10px;
             cursor: pointer;
-            margin-left: 10px;
             transition: all 0.4s;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
-        .history-btn:hover {
+        .history-btn:hover, .new-window-btn:hover {
             background: var(--accent);
             transform: translateY(-2px);
         }
@@ -188,6 +190,7 @@
             padding: 8px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
             text-align: center;
+            vertical-align: top;
         }
 
         .transactions-table input {
@@ -202,9 +205,18 @@
             overflow: visible;
         }
 
-        .description-input {
+        .description-textarea {
             color: white !important;
             font-size: 13px;
+            width: 100%;
+            min-height: 40px;
+            resize: none;
+            overflow: hidden;
+            border: none;
+            background: transparent;
+            text-align: center;
+            padding: 6px;
+            font-family: 'Tajawal', -apple-system, 'SF Arabic', sans-serif;
         }
 
         .credit-input {
@@ -220,7 +232,7 @@
         }
 
         .balance-input {
-            font-size: 12px !important;
+            font-size: 14px !important;
             font-weight: bold;
         }
 
@@ -250,16 +262,26 @@
             transform: translateY(-2px);
         }
 
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .edit-btn {
+            background: var(--edit-color) !important;
+            width: 100%;
+        }
+
         .save-btn {
             background: var(--accent) !important;
             width: 100%;
-            margin-top: 15px;
         }
 
-        .reset-btn {
-            background: #ff6b6b !important;
+        .share-btn {
+            background: var(--share-color) !important;
             width: 100%;
-            margin-top: 15px;
         }
 
         .final-balance {
@@ -322,7 +344,7 @@
             border-radius: 15px;
             width: 90%;
             max-width: 450px;
-            max-height: 80vh;
+            max-height: 70vh;
             overflow-y: auto;
             box-shadow: 0 15px 40px rgba(0,0,0,0.4);
             border: 1px solid var(--glass-border);
@@ -354,10 +376,33 @@
             cursor: pointer;
             transition: all 0.3s;
             border-radius: 8px;
+            margin-bottom: 10px;
+            background: rgba(0,0,0,0.2);
+            position: relative;
         }
 
         .history-item:hover {
             background: var(--secondary);
+        }
+
+        .history-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--accent);
+        }
+
+        .history-date {
+            font-size: 12px;
+            color: var(--text);
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .history-balance {
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
         }
 
         input[type="number"] {
@@ -368,6 +413,48 @@
         input[type="number"]::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
+        }
+
+        .btn-disabled {
+            background: var(--disabled-color) !important;
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .btn-pressed {
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
+            transform: translateY(1px);
+        }
+
+        .delete-btn {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            background: var(--delete-color);
+            color: white;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .clear-all-btn {
+            background: var(--delete-color) !important;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        /* Placeholder styling */
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+            font-style: italic;
         }
 
         @media (max-width: 480px) {
@@ -384,6 +471,77 @@
                 padding: 12px 0;
                 font-size: 15px;
             }
+
+            .header-buttons {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .history-btn, .new-window-btn {
+                flex: 1;
+            }
+        }
+
+        /* Loader */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;
+            color: white;
+            font-size: 18px;
+        }
+
+        .spinner {
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 5px solid #778da9;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;
+            color: white;
+            font-size: 18px;
+        }
+
+        .spinner {
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 5px solid #778da9;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -395,12 +553,20 @@
         </button>
 
         <div class="header">
-            <h1>صندوق أبو جراح</h1>
+            <h1 id="boxTitle">صندوق أبو جراح</h1>
             <div>
                 <div class="date-display" id="currentDateHijri"></div>
                 <div class="date-display" id="currentDateGregorian"></div>
             </div>
-            <button class="history-btn" onclick="showHistoryModal()">عرض السجل</button>
+            <div class="header-buttons">
+                <button class="history-btn" onclick="showHistoryModal()">عرض السجل</button>
+                <button class="new-window-btn" onclick="openNewWindow()">نافذة جديدة</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="boxTitleInput">عنوان الصندوق</label>
+            <input type="text" id="boxTitleInput" placeholder="أدخل عنواناً للصندوق" value="صندوق أبو جراح">
         </div>
 
         <div class="form-group">
@@ -411,7 +577,7 @@
         <table class="transactions-table">
             <thead>
                 <tr>
-                    <th style="width: 40%;">الوصف</th>
+                    <th style="width: 35%;">الوصف</th>
                     <th>دائن</th>
                     <th>مدين</th>
                     <th>الرصيد</th>
@@ -427,12 +593,15 @@
             <button onclick="calculateBalance()">حساب الرصيد</button>
         </div>
 
-        <button class="save-btn" onclick="saveData()">💾 حفظ البيانات</button>
-        <button class="reset-btn" onclick="resetBox()">🔄 إعادة تعيين الصندوق</button>
-
         <div class="final-balance">
             <h3>رصيد الصندوق الحالي:</h3>
             <div class="final-balance-value" id="finalBalance">0.00</div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="edit-btn" id="editBtn" onclick="enableEditing()">✏️ تعديل</button>
+            <button class="save-btn" id="saveBtn" onclick="saveData()">💾 حفظ البيانات</button>
+            <button class="share-btn" id="shareBtn" onclick="generateBoxImage()">↗️ مشاركة</button>
         </div>
 
         <div class="signature">
@@ -445,9 +614,17 @@
         <div class="modal-content">
             <h3 style="text-align:center;color:var(--accent);margin-bottom:20px;">سجل الأيام السابقة</h3>
             <div id="historyList"></div>
+            <button class="clear-all-btn" onclick="clearAllRecords()">🗑️ مسح جميع السجلات</button>
             <button class="close-modal" onclick="closeModal()">إغلاق</button>
         </div>
     </div>
+
+    <!-- Loader -->
+    <div id="loader" style="display: none;">
+        <div class="spinner"></div>
+        <div>جاري إنشاء الصورة...</div>
+    </div>
+    
 
     <script>
         // البيانات المخزنة
@@ -461,7 +638,11 @@
                 fontFamily: 'Tajawal',
                 primaryColor: '#16213e',
                 secondaryColor: '#415a77'
-            }
+            },
+            currentRecordId: null,
+            isEditing: true,
+            isSaved: false,
+            hasChanges: false
         };
 
         // عند تحميل الصفحة
@@ -470,8 +651,17 @@
             updateCurrentDate();
             loadData();
             addTransaction();
+            updateButtonStates();
 
-            document.getElementById('openingBalance').addEventListener('input', calculateBalance);
+            document.getElementById('openingBalance').addEventListener('input', function() {
+                appData.hasChanges = true;
+                calculateBalance();
+            });
+
+            document.getElementById('boxTitleInput').addEventListener('input', function() {
+                appData.hasChanges = true;
+                document.getElementById('boxTitle').textContent = this.value || 'صندوق أبو جراح';
+            });
         });
 
         // تحميل الإعدادات
@@ -499,13 +689,13 @@
             const now = new Date();
             appData.currentDate = now.toISOString().split('T')[0];
 
-            const hijriOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const hijriOptions = {   weekday: 'long',year: 'numeric', month: 'long', day: 'numeric' };
             const hijriDate = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', hijriOptions).format(now);
-            document.getElementById('currentDateHijri').textContent = 'تاريخ هجري: ' + hijriDate;
+            document.getElementById('currentDateHijri').textContent = ' ' + hijriDate;
 
-            const gregorianOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const gregorianOptions = { year: 'numeric', month: 'long', day: 'numeric' };
             const gregorianDate = new Intl.DateTimeFormat('ar-EG', gregorianOptions).format(now);
-            document.getElementById('currentDateGregorian').textContent = 'تاريخ ميلادي: ' + gregorianDate;
+            document.getElementById('currentDateGregorian').textContent =' ' + gregorianDate;
 
             checkDayChange();
         }
@@ -533,11 +723,14 @@
             const newRow = document.createElement('tr');
 
             newRow.innerHTML = `
-                <td><input type="text" class="description-input" placeholder="وصف الحركة" value="${transaction.description || ''}"></td>
+                <td>
+                    <textarea class="description-textarea" placeholder="وصف الحركة" ${appData.isEditing ? '' : 'disabled'}"
+                        oninput="autoExpand(this)">${transaction.description || ''}</textarea>
+                </td>
                 <td><input type="number" class="credit-input" placeholder="0.00" oninput="handleTransactionInput(this)" 
-                    pattern="[0-9]*" inputmode="numeric" value="${transaction.credit || ''}"></td>
+                    pattern="[0-9]*" inputmode="numeric" value="${transaction.credit || ''}" ${appData.isEditing ? '' : 'disabled'}"></td>
                 <td><input type="number" class="debit-input" placeholder="0.00" oninput="handleTransactionInput(this)" 
-                    pattern="[0-9]*" inputmode="numeric" value="${transaction.debit || ''}"></td>
+                    pattern="[0-9]*" inputmode="numeric" value="${transaction.debit || ''}" ${appData.isEditing ? '' : 'disabled'}"></td>
                 <td><input type="number" class="balance-input" readonly value="${transaction.balance || ''}"></td>
             `;
 
@@ -548,6 +741,35 @@
             } else if (transaction.debit && transaction.debit !== '0') {
                 newRow.querySelector('.credit-input').disabled = true;
             }
+
+            // ضبط الارتفاع الأولي للنص
+            if (transaction.description) {
+                autoExpand(newRow.querySelector('.description-textarea'));
+            }
+
+            appData.hasChanges = true;
+        }
+
+        // توسيع مربع النص تلقائياً
+        function autoExpand(textarea) {
+            // إعادة تعيين الارتفاع لضبطه بناءً على المحتوى
+            textarea.style.height = 'auto';
+            textarea.style.height = (textarea.scrollHeight) + 'px';
+
+            // ضبط ارتفاع الصف لجميع الخلايا في الصف
+            const row = textarea.closest('tr');
+            if (row) {
+                const newHeight = textarea.scrollHeight + 12; // 12 هو الـ padding
+                row.style.height = newHeight + 'px';
+
+                // ضبط ارتفاع جميع الخلايا في الصف
+                const cells = row.querySelectorAll('td');
+                cells.forEach(cell => {
+                    cell.style.height = newHeight + 'px';
+                });
+            }
+
+            appData.hasChanges = true;
         }
 
         // معالجة إدخال الحركات المالية
@@ -567,6 +789,7 @@
                 debitInput.disabled = false;
             }
 
+            appData.hasChanges = true;
             calculateBalance();
         }
 
@@ -589,45 +812,152 @@
 
         // حفظ البيانات
         function saveData() {
+            const title = document.getElementById('boxTitleInput').value || 'صندوق أبو جراح';
             const finalBalance = calculateBalance();
 
+            // التحقق من وجود بيانات للحفظ
+            const hasTransactions = Array.from(document.querySelectorAll('#transactionsBody tr')).some(row => {
+                const desc = row.querySelector('.description-textarea').value;
+                const credit = row.querySelector('.credit-input').value;
+                const debit = row.querySelector('.debit-input').value;
+                return desc || credit || debit;
+            });
+
+            if (!hasTransactions && document.getElementById('openingBalance').value === '') {
+                alert('لا توجد بيانات للحفظ');
+                return;
+            }
+
             const todayData = {
-                openingBalance: document.getElementById('openingBalance').value,
+                title: title,
+                openingBalance: document.getElementById('openingBalance').value || '0',
                 finalBalance: finalBalance.toFixed(2),
-                transactions: []
+                transactions: [],
+                saveTime: new Date().toLocaleTimeString('ar-EG'),
+                saveDate: new Date().toLocaleDateString('ar-EG', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric',
+                    weekday: 'long'
+                }),
+                timestamp: Date.now()
             };
 
             document.querySelectorAll('#transactionsBody tr').forEach(row => {
                 todayData.transactions.push({
-                    description: row.querySelector('.description-input').value,
+                    description: row.querySelector('.description-textarea').value,
                     credit: row.querySelector('.credit-input').value,
                     debit: row.querySelector('.debit-input').value,
                     balance: row.querySelector('.balance-input').value
                 });
             });
 
-            appData.dailyData[appData.currentDate] = todayData;
+            // إذا كان هناك سجل محفوظ مسبقاً، نقوم بتحديثه بدلاً من إنشاء جديد
+            const recordId = appData.currentRecordId || 'record_' + Date.now();
+            appData.dailyData[recordId] = todayData;
             appData.lastBalance = finalBalance.toFixed(2);
             appData.lastSavedDate = appData.currentDate;
+            appData.currentRecordId = recordId;
+            appData.isSaved = true;
+            appData.isEditing = false;
+            appData.hasChanges = false;
 
             localStorage.setItem('abujarrahBoxData', JSON.stringify(appData));
 
-            alert('تم حفظ البيانات بنجاح');
+            // تعطيل حقول الإدخال بعد الحفظ
+            document.querySelectorAll('#transactionsBody input').forEach(input => {
+                if (!input.classList.contains('balance-input')) {
+                    input.disabled = true;
+                }
+            });
+            document.querySelectorAll('#transactionsBody textarea').forEach(textarea => {
+                textarea.disabled = true;
+            });
+            document.getElementById('openingBalance').disabled = true;
+            document.getElementById('boxTitleInput').disabled = true;
+
+            // تحديث حالة الأزرار
+            updateButtonStates();
         }
 
         // تحميل البيانات المحفوظة
         function loadData() {
             const savedData = localStorage.getItem('abujarrahBoxData');
             if (savedData) {
-                appData = JSON.parse(savedData);
+                const parsedData = JSON.parse(savedData);
+                appData.dailyData = parsedData.dailyData || {};
+                appData.lastBalance = parsedData.lastBalance || "0.00";
+                appData.lastSavedDate = parsedData.lastSavedDate || '';
+                appData.settings = parsedData.settings || appData.settings;
+                appData.isSaved = true;
+                appData.isEditing = false;
 
-                if (appData.dailyData[appData.currentDate]) {
-                    loadDayData(appData.currentDate);
-                } 
-                else if (appData.lastBalance) {
-                    document.getElementById('openingBalance').value = appData.lastBalance;
-                    document.getElementById('finalBalance').textContent = appData.lastBalance;
+                if (Object.keys(appData.dailyData).length > 0) {
+                    // تحميل آخر سجل محفوظ
+                    const lastRecordId = Object.keys(appData.dailyData).sort((a, b) => {
+                        return appData.dailyData[b].timestamp - appData.dailyData[a].timestamp;
+                    })[0];
+                    loadRecord(lastRecordId);
                 }
+            } else {
+                // إذا لم تكن هناك بيانات محفوظة، نبدأ بحالة تحرير
+                appData.isEditing = true;
+                appData.isSaved = false;
+                updateButtonStates();
+            }
+        }
+
+        // تمكين التعديل
+        function enableEditing() {
+            appData.isEditing = true;
+            appData.hasChanges = true;
+
+            // تمكين حقول الإدخال
+            document.querySelectorAll('#transactionsBody input').forEach(input => {
+                if (!input.classList.contains('balance-input')) {
+                    input.disabled = false;
+                }
+            });
+            document.querySelectorAll('#transactionsBody textarea').forEach(textarea => {
+                textarea.disabled = false;
+            });
+            document.getElementById('openingBalance').disabled = false;
+            document.getElementById('boxTitleInput').disabled = false;
+
+            // تحديث حالة الأزرار
+            updateButtonStates();
+        }
+
+        // تحديث حالة الأزرار
+        function updateButtonStates() {
+            const saveBtn = document.getElementById('saveBtn');
+            const editBtn = document.getElementById('editBtn');
+            const shareBtn = document.getElementById('shareBtn');
+
+            if (appData.isEditing) {
+                // حالة التحرير
+                saveBtn.disabled = false;
+                saveBtn.classList.remove('btn-disabled', 'btn-pressed');
+                editBtn.disabled = true;
+                editBtn.classList.add('btn-disabled');
+                shareBtn.disabled = true;
+                shareBtn.classList.add('btn-disabled');
+            } else if (appData.isSaved) {
+                // حالة محفوظة
+                saveBtn.disabled = true;
+                saveBtn.classList.add('btn-pressed');
+                editBtn.disabled = false;
+                editBtn.classList.remove('btn-disabled', 'btn-pressed');
+                shareBtn.disabled = false;
+                shareBtn.classList.remove('btn-disabled', 'btn-pressed');
+            } else {
+                // حالة جديدة غير محفوظة
+                saveBtn.disabled = false;
+                saveBtn.classList.remove('btn-disabled', 'btn-pressed');
+                editBtn.disabled = true;
+                editBtn.classList.add('btn-disabled');
+                shareBtn.disabled = true;
+                shareBtn.classList.add('btn-disabled');
             }
         }
 
@@ -637,33 +967,37 @@
             const historyList = document.getElementById('historyList');
             historyList.innerHTML = '';
 
-            const sortedDates = Object.keys(appData.dailyData).sort().reverse();
+            const records = Object.entries(appData.dailyData);
 
-            if (sortedDates.length === 0) {
+            if (records.length === 0) {
                 historyList.innerHTML = '<p style="text-align:center;color:var(--text);">لا توجد بيانات سابقة</p>';
             } else {
-                sortedDates.forEach(date => {
-                    const dayData = appData.dailyData[date];
-                    const dateObj = new Date(date);
-                    const dateStr = dateObj.toLocaleDateString('ar-EG', { 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric',
-                        weekday: 'long'
-                    });
+                // ترتيب السجلات من الأحدث إلى الأقدم حسب الطابع الزمني
+                records.sort((a, b) => {
+                    return b[1].timestamp - a[1].timestamp;
+                });
 
+                records.forEach(([id, record]) => {
                     const historyItem = document.createElement('div');
                     historyItem.className = 'history-item';
+                    historyItem.dataset.id = id;
+
                     historyItem.innerHTML = `
-                        <div><strong>${dateStr}</strong></div>
-                        <div>الرصيد الافتتاحي: ${dayData.openingBalance}</div>
-                        <div>الرصيد الختامي: ${dayData.finalBalance}</div>
-                        <small style="color:var(--accent);">${dayData.transactions.length} حركة</small>
+                        <button class="delete-btn" onclick="deleteRecord('${id}', event)">×</button>
+                        <div class="history-title">${record.title}</div>
+                        <div class="history-date">${record.saveDate} - ${record.saveTime}</div>
+                        <div class="history-balance">
+                            <span>الرصيد الافتتاحي: ${record.openingBalance}</span>
+                            <span>الرصيد الختامي: ${record.finalBalance}</span>
+                        </div>
                     `;
 
-                    historyItem.onclick = function() {
-                        loadDayData(date);
-                        closeModal();
+                    historyItem.onclick = function(e) {
+                        // منع تنفيذ النقر إذا كان على زر الحذف
+                        if (!e.target.classList.contains('delete-btn')) {
+                            loadRecord(id);
+                            closeModal();
+                        }
                     };
 
                     historyList.appendChild(historyItem);
@@ -673,36 +1007,414 @@
             modal.style.display = 'flex';
         }
 
+        // حذف سجل معين
+        function deleteRecord(recordId, event) {
+            event.stopPropagation();
+
+            if (confirm('هل أنت متأكد من حذف هذا السجل؟')) {
+                delete appData.dailyData[recordId];
+                localStorage.setItem('abujarrahBoxData', JSON.stringify(appData));
+
+                // إذا كان السجل المحذوف هو السجل الحالي، نقوم بإعادة تعيين الصندوق
+                if (appData.currentRecordId === recordId) {
+                    resetBox();
+                }
+
+                showHistoryModal();
+            }
+        }
+
+        // مسح جميع السجلات
+        function clearAllRecords() {
+            if (confirm('هل أنت متأكد من حذف جميع السجلات؟ لا يمكن التراجع عن هذا الإجراء.')) {
+                appData.dailyData = {};
+                localStorage.setItem('abujarrahBoxData', JSON.stringify(appData));
+                resetBox();
+                showHistoryModal();
+            }
+        }
+
         // إغلاق النافذة
         function closeModal() {
             document.getElementById('historyModal').style.display = 'none';
         }
 
-        // تحميل بيانات يوم معين
-        function loadDayData(date) {
-            const dayData = appData.dailyData[date];
-            if (!dayData) return;
+        // تحميل سجل معين
+        function loadRecord(recordId) {
+            const record = appData.dailyData[recordId];
+            if (!record) return;
 
-            document.getElementById('openingBalance').value = dayData.openingBalance;
+            // تعطيل حقول الإدخال
+            appData.isEditing = false;
+            appData.isSaved = true;
+            appData.currentRecordId = recordId;
+            appData.hasChanges = false;
+
+            document.getElementById('boxTitleInput').value = record.title;
+            document.getElementById('boxTitle').textContent = record.title;
+            document.getElementById('openingBalance').value = record.openingBalance;
+            document.getElementById('openingBalance').disabled = true;
+            document.getElementById('boxTitleInput').disabled = true;
+
             document.getElementById('transactionsBody').innerHTML = '';
 
-            dayData.transactions.forEach(transaction => {
+            record.transactions.forEach(transaction => {
                 addTransaction(transaction);
             });
 
-            document.getElementById('finalBalance').textContent = dayData.finalBalance;
+            document.getElementById('finalBalance').textContent = record.finalBalance;
+
+            // تحديث حالة الأزرار
+            updateButtonStates();
+        }
+
+        // فتح نافذة جديدة
+        function openNewWindow() {
+            // فقط إذا كانت النافذة الحالية غير محفوظة ولها تغييرات
+            if (!appData.isSaved && appData.hasChanges) {
+                if (confirm('يوجد تغييرات غير محفوظة. هل تريد المتابعة دون حفظ؟')) {
+                    resetBox();
+                }
+            } else {
+                resetBox();
+            }
         }
 
         // إعادة تعيين الصندوق
         function resetBox() {
-            if (confirm('هل أنت متأكد من أنك تريد إعادة تعيين الصندوق؟ سيتم مسح جميع البيانات الحالية!')) {
-                document.getElementById('openingBalance').value = '0';
-                document.getElementById('transactionsBody').innerHTML = '';
-                document.getElementById('finalBalance').textContent = '0.00';
-                addTransaction();
-                calculateBalance();
-                alert('تم إعادة تعيين الصندوق بنجاح');
+            document.getElementById('boxTitleInput').value = 'صندوق أبو جراح';
+            document.getElementById('boxTitle').textContent = 'صندوق أبو جراح';
+            document.getElementById('openingBalance').value = '0';
+            document.getElementById('openingBalance').disabled = false;
+            document.getElementById('boxTitleInput').disabled = false;
+            document.getElementById('transactionsBody').innerHTML = '';
+            document.getElementById('finalBalance').textContent = '0.00';
+
+            // إضافة حركة فارغة
+            addTransaction();
+
+            // حساب الرصيد
+            calculateBalance();
+
+            // تحديث الحالة
+            appData.isEditing = true;
+            appData.isSaved = false;
+            appData.hasChanges = false;
+            appData.currentRecordId = null;
+
+            // تحديث حالة الأزرار
+            updateButtonStates();
+        }
+
+        // ===================================================
+        // الحل المضمون لإنشاء صورة بدون تقطيع النصوص
+        // لـــــحديـــــد الــتســلـيــح===================================================
+        async function generateBoxImage() {
+            if (!appData.isSaved) {
+                alert('يجب حفظ السجل أولاً قبل مشاركته');
+                return;
             }
+
+            const loader = document.getElementById('loader');
+            loader.style.display = 'flex';
+
+            try {
+                // حساب الأبعاد
+                const transactions = document.querySelectorAll('#transactionsBody tr');
+                const baseHeight = 450;
+                const headerHeight = 45;
+                let tableContentHeight = 0;
+
+                transactions.forEach(row => {
+                    const description = row.querySelector('.description-textarea').value || '';
+                    const lines = Math.max(1, Math.ceil(description.length / 30));
+                    tableContentHeight += 40 + (lines * 15);
+                });
+
+                const totalHeight = baseHeight + headerHeight + tableContentHeight + 200;
+
+                // إنشاء canvas
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const width = 850;
+
+                canvas.width = width * 2;
+                canvas.height = totalHeight * 2;
+                ctx.scale(2, 2);
+
+                // الخلفية
+                const gradient = ctx.createLinearGradient(0, 0, width, totalHeight);
+                gradient.addColorStop(0, '#0a1423');
+                gradient.addColorStop(1, '#16213e');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, width, totalHeight);
+
+                // تحميل وعرض الشعار واسم المؤسسة في أعلى اليمين
+                try {
+                    const logoImg = await loadImage('png 2.png');
+                    if (logoImg) {
+                        const logoHeight = 120;
+                        const logoWidth = (logoImg.width * logoHeight) / logoImg.height;
+
+                        // وضع الشعار في أعلى اليمين
+                        const logoX = width - logoWidth - 30; // 30px من الحافة اليمنى
+                        const logoY = 13; // 30px من الأعلى
+
+                        ctx.drawImage(logoImg, logoX, logoY, logoWidth, logoHeight);
+
+                        // اسم المؤسسة تحت الشعار مع إزاحة أكثر لليمين
+                        ctx.font = `bold 21px 'Tajawal', sans-serif`;
+                        ctx.fillStyle = '#f0f1f5';
+                        ctx.textAlign = 'right';
+
+                        const institutionLines = [
+                            "مؤسسة بناء اليمن",
+        "لـــــحديـــــد الــتســلـيــح",
+                        ];
+
+                        // زيادة الإزاحة لليمين بإضافة 20px إضافية
+                        const textRightEdge = width - 10; // 10px من الحافة اليمنى بدلاً من 30px
+
+                        // كتابة النصوص تحت الشعار مع محاذاة لليمين أكثر
+                        institutionLines.forEach((line, index) => {
+                            const yPosition = logoY + logoHeight + 19 + (index * 35);
+                            ctx.fillText(line, textRightEdge, yPosition);
+                        });
+                    }
+                } catch (e) {
+                    console.warn('تعذر تحميل صورة الشعار:', e);
+                }
+
+                // عنوان الصندوق (في المنتصف كما كان سابقاً)
+                let currentY = 50;
+                ctx.font = `bold 38px 'Tajawal', sans-serif`;
+                ctx.fillStyle = '#778da9';
+                ctx.textAlign = 'center';
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+                ctx.shadowBlur = 5;
+                const title = document.getElementById('boxTitleInput').value || 'صندوق أبو جراح';
+                ctx.fillText(title, width / 2, currentY);
+                ctx.shadowBlur = 0;
+                currentY += 70;
+
+                // التاريخ
+                ctx.font = `20px 'Tajawal', sans-serif`;
+                ctx.fillStyle = '#f0f1f5';
+                ctx.strokeStyle = '#415a77';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(width/2 - 200, currentY - 20, 400, 70);
+                ctx.fillText(document.getElementById('currentDateHijri').textContent, width / 2, currentY);
+                currentY += 30;
+                ctx.fillText(document.getElementById('currentDateGregorian').textContent, width / 2, currentY);
+                currentY += 60;
+
+                // الرصيد الافتتاحي
+                ctx.font = `26px 'Tajawal', sans-serif`;
+                ctx.fillStyle = '#f0f1f5';
+                ctx.fillText('الرصيد الافتتاحي', width / 2, currentY);
+                currentY += 45;
+
+                ctx.beginPath();
+                ctx.roundRect(width/2 - 100, currentY - 25, 200, 50, 10);
+                ctx.fillStyle = 'rgba(65, 90, 119, 0.3)';
+                ctx.fill();
+                ctx.strokeStyle = '#415a77';
+                ctx.stroke();
+
+                ctx.font = `bold 30px 'Tajawal', sans-serif`;
+                ctx.fillStyle = '#6ab799';
+                const openingBalance = document.getElementById('openingBalance').value || '0.00';
+                ctx.fillText(openingBalance, width / 2, currentY);
+                currentY += 80;
+
+                // رسم الجدول
+                drawEnhancedTable(ctx, width, currentY, tableContentHeight, 'Tajawal');
+                currentY += tableContentHeight + headerHeight + 40;
+
+                // الرصيد النهائي
+                ctx.font = `26px 'Tajawal', sans-serif`;
+                ctx.fillStyle = '#f0f1f5';
+                ctx.fillText('رصيد الصندوق الحالي', width / 2, currentY);
+                currentY += 45;
+
+                // معالجة الرصيد النهائي
+                let finalBalanceText = document.getElementById('finalBalance').textContent;
+                const balanceValue = parseFloat(finalBalanceText.replace(/,/g, ''));
+
+                finalBalanceText = finalBalanceText.replace(/-/g, '').trim();
+                if (balanceValue < 0) {
+                    finalBalanceText = '-' + finalBalanceText;
+                }
+
+                const containerColor = balanceValue >= 0 ? '#273f44' : '#5c0a0a';
+                const textColor = balanceValue >= 0 ? '#6ab799' : '#ff6b6b';
+                const borderColor = balanceValue >= 0 ? '#51cf66' : '#ff6b6b';
+
+                ctx.beginPath();
+                ctx.roundRect(width/2 - 120, currentY - 25, 240, 50, 10);
+                ctx.fillStyle = containerColor;
+                ctx.fill();
+                ctx.strokeStyle = borderColor;
+                ctx.stroke();
+
+                ctx.font = `bold 36px 'Tajawal', sans-serif`;
+                ctx.fillStyle = textColor;
+
+                if (balanceValue < 0) {
+                    const textWithoutSign = finalBalanceText.replace('-', '');
+                    const textWidth = ctx.measureText(textWithoutSign).width;
+                    ctx.fillText('-', width / 2 - textWidth/2 - 10, currentY);
+                    ctx.fillText(textWithoutSign, width / 2 + 5, currentY);
+                } else {
+                    ctx.fillText(finalBalanceText, width / 2, currentY);
+                }
+
+                currentY += 80;
+
+                // التوقيع
+                ctx.font = `italic 20px 'Tajawal', sans-serif`;
+                ctx.fillStyle = 'rgba(240, 241, 245, 0.7)';
+
+                ctx.beginPath();
+                ctx.moveTo(width/2 - 150, currentY + 10);
+                ctx.lineTo(width/2 + 150, currentY + 10);
+                ctx.strokeStyle = 'rgba(119, 141, 169, 0.5)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                ctx.fillText('تصميم وبرمجة المهندس / أبو جراح الخولاني', width / 2, currentY + 30);
+
+                // تحويل Canvas إلى صورة بدقة عادية
+                const finalCanvas = document.createElement('canvas');
+                finalCanvas.width = width;
+                finalCanvas.height = totalHeight;
+                const finalCtx = finalCanvas.getContext('2d');
+                finalCtx.drawImage(canvas, 0, 0, width, totalHeight);
+
+                // إنشاء رابط للتحميل
+                const dataUrl = finalCanvas.toDataURL('image/png', 1.0);
+                const link = document.createElement('a');
+                link.href = dataUrl;
+                link.download = `سجل_صندوق_${new Date().toLocaleDateString('ar-EG')}.png`;
+                document.body.appendChild(link);
+                link.click();
+
+                setTimeout(() => {
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(link.href);
+                    loader.style.display = 'none';
+                }, 100);
+
+            } catch (error) {
+                console.error('Error generating image:', error);
+                loader.style.display = 'none';
+                alert('حدث خطأ في إنشاء الصورة. يرجى المحاولة مرة أخرى.');
+            }
+        }
+
+        function loadImage(src) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve(img);
+                img.onerror = reject;
+                img.src = src;
+            });
+        }
+
+        function drawEnhancedTable(ctx, width, startY, tableHeight, fontFamily) {
+            const padding = 50;
+            const headerHeight = 45;
+            const colWidth = (width - padding * 2) / 4;
+
+            const cols = {
+                balance: padding + colWidth * 0.5,
+                debit: padding + colWidth * 1.5,
+                credit: padding + colWidth * 2.5,
+                description: padding + colWidth * 3.5
+            };
+
+            // رأس الجدول
+            ctx.beginPath();
+            ctx.roundRect(padding, startY, width - padding * 2, headerHeight, 8);
+            ctx.fillStyle = '#415a77';
+            ctx.fill();
+
+            ctx.strokeStyle = 'rgba(119, 141, 169, 0.8)';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            ctx.fillStyle = '#f0f1f5';
+            ctx.font = `bold 20px ${fontFamily}`;
+            ctx.fillText('الرصيد', cols.balance, startY + headerHeight/2);
+            ctx.fillText('مدين', cols.debit, startY + headerHeight/2);
+            ctx.fillText('دائن', cols.credit, startY + headerHeight/2);
+            ctx.fillText('الوصف', cols.description, startY + headerHeight/2);
+
+            // بيانات الجدول
+            ctx.font = `20px ${fontFamily}`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            const transactions = document.querySelectorAll('#transactionsBody tr');
+            let currentY = startY + headerHeight;
+
+            transactions.forEach((row, index) => {
+                const description = row.querySelector('.description-textarea').value || '';
+                const lines = Math.max(1, Math.ceil(description.length / 30));
+                const rowHeight = 40 + (lines * 15);
+
+                ctx.beginPath();
+                ctx.roundRect(padding, currentY, width - padding * 2, rowHeight, 5);
+                ctx.fillStyle = index % 2 === 0 ? 'rgba(65, 90, 119, 0.15)' : 'rgba(119, 141, 169, 0.1)';
+                ctx.fill();
+
+                ctx.strokeStyle = 'rgba(119, 141, 169, 0.3)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                ctx.fillStyle = '#f0f1f5';
+
+                const balance = row.querySelector('.balance-input').value || '0.00';
+                ctx.fillText(balance, cols.balance, currentY + rowHeight/2);
+
+                const debit = row.querySelector('.debit-input').value || '0.00';
+                ctx.fillText(debit, cols.debit, currentY + rowHeight/2);
+
+                const credit = row.querySelector('.credit-input').value || '0.00';
+                ctx.fillText(credit, cols.credit, currentY + rowHeight/2);
+
+                const textLines = wrapText(ctx, description, colWidth - 30, `16px ${fontFamily}`);
+                textLines.forEach((line, i) => {
+                    ctx.fillText(line, cols.description, currentY + 20 + (i * 20));
+                });
+
+                currentY += rowHeight;
+            });
+        }
+
+        function wrapText(ctx, text, maxWidth, fontStyle) {
+            if (!text) return [''];
+
+            ctx.save();
+            ctx.font = fontStyle;
+            const words = text.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                const word = words[i];
+                const width = ctx.measureText(currentLine + ' ' + word).width;
+                if (width < maxWidth) {
+                    currentLine += ' ' + word;
+                } else {
+                    lines.push(currentLine);
+                    currentLine = word;
+                }
+            }
+            lines.push(currentLine);
+            ctx.restore();
+
+            return lines;
         }
     </script>
 </body>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#415a77">
+    <meta name="theme-color" content="#0D1729">
     <meta name="description" content="تطبيق لحساب أسعار الحديد والعمال وصندوق أبو جراح">
     <meta property="og:title" content="مؤسسة بناء اليمن للتجارة">
     <meta property="og:description" content="تطبيق لحساب أسعار الحديد والعمال وصندوق أبو جراح">
@@ -22,11 +22,10 @@
             --glass-bg: rgba(22, 33, 62, 0.85);
             --glass-border: rgba(255, 255, 255, 0.2);
             --glass-highlight: rgba(255, 255, 255, 0.15);
-            --btn-glass: rgba(65, 90, 119, 0.5);
-            --operator-glass: rgba(119, 141, 169, 0.7);
-            --equal-glass: rgba(74, 140, 255, 0.7);
-            --clear-glass: rgba(255, 107, 107, 0.7);
-        }
+
+
+              
+            }
 
         * {
             margin: 0;
@@ -34,6 +33,9 @@
             box-sizing: border-box;
             font-family: 'Tajawal', -apple-system, 'SF Arabic', sans-serif;
             touch-action: manipulation;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
         }
 
         body {
@@ -49,6 +51,7 @@
             padding: 20px;
             margin: 0;
             overflow-x: hidden;
+            overflow-y: hidden;
         }
 
         .container {
@@ -64,12 +67,10 @@
             border: 1px solid var(--glass-border);
             position: relative;
             overflow: hidden;
-            transition: transform 0.5s ease;
+            transition: transform 0.3s ease;
         }
 
-        .container.calculator-open {
-            transform: translateY(-30%);
-        }
+      
 
         .container::before {
             content: '';
@@ -96,7 +97,8 @@
         .institute-name {
             font-size: 24px;
             text-align: center;
-            margin-bottom: 10px;
+            top:40px;
+            margin-bottom: 45px;
             color: white;
             font-weight: 800;
             text-shadow: 0 2px 8px rgba(0,0,0,0.4);
@@ -119,9 +121,10 @@
         h1 {
             color: white;
             text-align: center;
-            margin-bottom: 32px;
+               margin-bottom: 16px;
+            padding-bottom:10px;
             font-size: 28px;
-            padding-bottom: 16px;
+             
             border-bottom: 1px solid var(--glass-border);
             text-shadow: 0 2px 6px rgba(0,0,0,0.3);
             font-weight: 700;
@@ -135,7 +138,7 @@
             font-size: 22px;
             font-weight: 700;
             width: 100%;
-            border-radius: 14px;
+            border-radius: 18px;
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             margin-bottom: 20px;
@@ -200,236 +203,36 @@
             background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
         }
 
-        /* زر الحاسبة السحابي */
-        .calc-tab {
-            position: fixed;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--secondary), var(--primary));
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            z-index: 1000;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid var(--glass-border);
-            user-select: none;
-            touch-action: none;
-        }
-
-        .calc-tab:hover {
-            transform: translateY(-5px) scale(1.05);
-            background: linear-gradient(135deg, var(--accent), var(--secondary));
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-        }
-
-        .calc-tab i {
-            font-size: 24px;
-            color: white;
-        }
-
-        /* أنماط الحاسبة الجديدة (بنفس الترتيب مع تغيير الألوان فقط) */
-        .calculator-container {
-            position: fixed;
-            bottom: -100%;
-            left: 0;
-            width: 100%;
-            height: 65%;
-            background: var(--primary-dark);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.4);
-            border-top: 1px solid var(--glass-border);
-            z-index: 999;
-            transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            border-radius: 20px 20px 0 0;
-        }
-
-        .calculator-container.open {
-            bottom: 0;
-        }
-
-        .calculator-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            margin-bottom: 20px;
-        }
-
-        .calculator-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        .calculator-close {
-            background: none;
-            border: none;
-            color: var(--text);
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        #calcDisplay {
-            width: 90%;
-            margin: 0 0 20px 0;
-            padding: 15px;
-            font-size: 32px;
-            text-align: right;
-            background: rgba(0, 0, 0, 0.3);
-            color: var(--text);
-            border: none;
-            border-radius: 10px;
-            outline: none;
-        }
-
-        .calculator-buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 70px);
-            gap: 10px;
-            justify-content: center;
-            width: 100%;
-        }
-
-        .calc-button {
-            height: 60px;
-            font-size: 24px;
-            border: none;
-            border-radius: 10px;
-            background: var(--btn-glass);
-            color: white;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .calc-button.operator {
-            background: var(--operator-glass);
-        }
-
-        .calc-button.equal {
-            background: var(--equal-glass);
-        }
-
-        .calc-button.clear {
-            background: var(--clear-glass);
-            grid-column: span 2;
-        }
-
-        .calc-button.backspace {
-            background: var(--operator-glass);
-            grid-column: span 2;
-        }
-
-        .calc-button:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-
-        .clear-buttons-container {
-            grid-column: span 4;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        @media (max-width: 768px) {
-            .calculator-buttons {
-                grid-template-columns: repeat(4, 1fr);
-            }
-
-            .calc-button {
-                height: 50px;
-                font-size: 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 25px 20px;
-                border-radius: 18px;
-            }
-
-            h1 {
-                font-size: 24px;
-            }
-
-            .main-btn {
-                padding: 20px 0;
-                font-size: 20px;
-            }
-
-            .calculator-container {
-                height: 70%;
-                padding: 15px;
-            }
-
-            #calcDisplay {
-                font-size: 28px;
-                padding: 12px;
-            }
-
-            .calc-button {
-                height: 45px;
-                font-size: 18px;
-            }
+        .result-logo {
+          position: absolute;
+          top: 1px;     /* ← المسافة من الأعلى */
+          right: 173px;   /* ← المسافة من اليمين */
+          height: 65px;
+          z-index: 10;
         }
     </style>
+     
+        <a id="testDataLink" href="/data.json" target="_blank" style="display:none">اختبار البيانات</a>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="calculator.css">
+    
 </head>
 <body>
-    <!-- زر الحاسبة السحابي -->
-    <div class="calc-tab" id="calcTab">
-        <i class="fas fa-calculator"></i>
-    </div>
-
-    <!-- الحاسبة الجديدة (بنفس الترتيب مع تغيير الألوان فقط) -->
-    <div class="calculator-container" id="calculatorContainer">
-        <div class="calculator-header">
-            <div class="calculator-title">الحاسبة</div>
-            <button class="calculator-close" onclick="toggleCalculator()">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-
-        <div id="calcDisplay" class="calc-display">0</div>
-
-        <div class="calculator-buttons">
-            <button class="calc-button operator" onclick="press('/')">÷</button>
-            <button class="calc-button function" onclick="clearDisplay()">AC</button>
-            <button class="calc-button function" onclick="deleteLastChar()">⌫</button>
-            <button class="calc-button function" onclick="insertAns()">Ans</button>
-
-            <button class="calc-button operator" onclick="press('*')">×</button>
-            <button class="calc-button" onclick="press('7')">7</button>
-            <button class="calc-button" onclick="press('8')">8</button>
-            <button class="calc-button" onclick="press('9')">9</button>
-
-            <button class="calc-button operator" onclick="press('-')">−</button>
-            <button class="calc-button" onclick="press('4')">4</button>
-            <button class="calc-button" onclick="press('5')">5</button>
-            <button class="calc-button" onclick="press('6')">6</button>
-
-            <button class="calc-button operator" onclick="press('+')">+</button>
-            <button class="calc-button" onclick="press('1')">1</button>
-            <button class="calc-button" onclick="press('2')">2</button>
-            <button class="calc-button" onclick="press('3')">3</button>
-
-            <button class="calc-button operator" onclick="calculate()">=</button>
-            <button class="calc-button" onclick="press('0')">0</button>
-            <button class="calc-button" onclick="press('.')">.</button>
-        </div>
-    </div>
-
+    <script type="module" src="generateData.js"></script>
+    <script src="getAllData.js"></script>
+    <script>
+      window.addEventListener('load', async () => {
+        await updateDataJson(); // تحدث الملف
+        document.getElementById('testDataLink').click(); // افتح الرابط تلقائي
+      });
+    </script>
+    <script src="getAllData.js"></script>
+    <!-- الصفحة الرئيسية -->
     <div class="container" id="mainContainer">
-        <div class="institute-name">مؤسسة بناء اليمن للتجارة</div>
+        <div class="institute-name"> 
+مؤسسة بناء اليمن للتجارة</div>
+        <img src="png 2.png" class="result-logo" alt="شعار المؤسسة">
         <h1>حاسبة أسعار الحديد</h1>
 
         <button onclick="window.location.href='bundles.html'" class="main-btn">
@@ -444,25 +247,10 @@
             تصميم وبرمجة المهندس / أبو جراح الخولاني
         </div>
     </div>
+
+    <!-- تضمين ملف الآلة الحاسبة -->
+    <script src="calculator.js"></script>
     <script>
-        // وظيفة لتغيير اسم التطبيق
-        function changeAppName(newName) {
-            const manifestData = {
-                name: newName,
-                short_name: newName
-            };
-            localStorage.setItem('customAppName', JSON.stringify(manifestData));
-        }
-
-        // تحميل الاسم المخصص عند بدء التطبيق
-        window.addEventListener('load', () => {
-            const customName = localStorage.getItem('customAppName');
-            if (customName) {
-                const nameData = JSON.parse(customName);
-                document.title = nameData.name;
-            }
-        });
-
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js')
@@ -470,147 +258,6 @@
                     .catch(err => console.error('فشل التسجيل:', err));
             });
         }
-
-        // متغيرات الحاسبة
-        let current = '';
-        let calculatorOpen = false;
-        let isDragging = false;
-        let offsetX, offsetY;
-
-        // عناصر DOM
-        const calcTab = document.getElementById('calcTab');
-        const calculatorContainer = document.getElementById('calculatorContainer');
-        const mainContainer = document.getElementById('mainContainer');
-        const calcDisplay = document.getElementById('calcDisplay');
-
-        // جعل زر الحاسبة قابلاً للسحب
-        calcTab.addEventListener('mousedown', startDrag);
-        calcTab.addEventListener('touchstart', startDrag);
-
-        function startDrag(e) {
-            isDragging = false; // نبدأ بحالة عدم سحب
-
-            if (e.type === 'mousedown') {
-                offsetX = e.clientX - calcTab.getBoundingClientRect().left;
-                offsetY = e.clientY - calcTab.getBoundingClientRect().top;
-            } else if (e.type === 'touchstart') {
-                const touch = e.touches[0];
-                offsetX = touch.clientX - calcTab.getBoundingClientRect().left;
-                offsetY = touch.clientY - calcTab.getBoundingClientRect().top;
-            }
-
-            // نبدأ السحب فقط بعد تأخير بسيط لتجنب التداخل مع النقر
-            setTimeout(() => {
-                isDragging = true;
-            }, 100);
-        }
-
-        document.addEventListener('mousemove', drag);
-        document.addEventListener('touchmove', drag);
-
-        function drag(e) {
-            if (!isDragging) return;
-
-            let clientX, clientY;
-
-            if (e.type === 'mousemove') {
-                clientX = e.clientX;
-                clientY = e.clientY;
-            } else if (e.type === 'touchmove') {
-                const touch = e.touches[0];
-                clientX = touch.clientX;
-                clientY = touch.clientY;
-            }
-
-            calcTab.style.left = (clientX - offsetX) + 'px';
-            calcTab.style.top = (clientY - offsetY) + 'px';
-        }
-
-        document.addEventListener('mouseup', endDrag);
-        document.addEventListener('touchend', endDrag);
-
-        function endDrag() {
-            isDragging = false;
-        }
-
-        // تبديل الحاسبة
-        function toggleCalculator() {
-            calculatorOpen = !calculatorOpen;
-
-            if (calculatorOpen) {
-                calculatorContainer.classList.add('open');
-                mainContainer.classList.add('calculator-open');
-            } else {
-                calculatorContainer.classList.remove('open');
-                mainContainer.classList.remove('calculator-open');
-            }
-        }
-
-        // حدث النقر على زر الحاسبة السحابي
-        calcTab.addEventListener('click', function(e) {
-            if (!isDragging) {
-                toggleCalculator();
-            }
-        });
-
-        // ضمان أن الزر قابل للنقر
-        calcTab.style.cursor = 'pointer';
-
-        // إضافة قيمة للعرض
-        function press(val) {
-            if (calcDisplay.value === '0' && val !== '.') {
-                current = '';
-            }
-            current += val;
-            calcDisplay.value = current;
-        }
-
-        // حساب النتيجة
-        function calculate() {
-            try {
-                current = eval(current).toString();
-                calcDisplay.value = current;
-            } catch {
-                calcDisplay.value = "خطأ";
-                current = '';
-            }
-        }
-
-        // مسح العرض
-        function clearDisplay() {
-            current = '';
-            calcDisplay.value = '0';
-        }
-
-        // مسح آخر رقم
-        function backspace() {
-            current = current.slice(0, -1);
-            calcDisplay.value = current || '0';
-        }
-
-        // أحداث لوحة المفاتيح
-        document.addEventListener('keydown', function(event) {
-            if (calculatorOpen) {
-                const key = event.key;
-
-                if (/[0-9+\-*/.]/.test(key)) {
-                    press(key);
-                } else if (key === 'Enter') {
-                    calculate();
-                } else if (key === 'Backspace') {
-                    backspace();
-                } else if (key === 'Escape') {
-                    clearDisplay();
-                }
-            }
-        });
-
-        // منع تكبير الصفحة على الهواتف
-        document.addEventListener('gesturestart', function(e) {
-            e.preventDefault();
-        });
-
-        // وضع أولي لزر الحاسبة
-        calcTab.style.left = '20px';
-        calcTab.style.bottom = '20px';
     </script>
+</body>
+</html>
