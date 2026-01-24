@@ -1742,7 +1742,7 @@ document.getElementById('rodsNote').innerText = priceNote;
                 downloadLink.href = image;
                 downloadLink.download = inventoryMode ? 'حساب_المخزون.png' : 'حساب_الأسياخ.png';
                 downloadLink.click();
-
+               
                 if (navigator.share && navigator.onLine) {
                     canvas.toBlob(function (blob) {
                         const file = new File([blob], inventoryMode ? "حساب_المخزون.png" : "حساب_الأسياخ.png", { type: "image/png" });
@@ -1756,6 +1756,7 @@ document.getElementById('rodsNote').innerText = priceNote;
                 }
             });
         }
+        //كلااام 
     </script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <!-- تضمين ملف الآلة الحاسبة -->
