@@ -640,6 +640,27 @@
             padding: 10px;
             font-size: 14px;
         }
+.form-group22 input {
+    width: 150px;
+    padding: 7px;
+    margin-top: 15px;
+    margin-right: 5px;
+    font-size: 18px;
+    border: 2px solid var(--glass-border);
+    border-radius: 8px;
+    text-align: center;
+    direction: ltr;
+    background: rgba(0,0,0,0.2);
+    color: white;
+}
+
+.printed-client {
+    text-align: right;
+    direction: rtl;
+    margin: 5px 0;
+    font-size: 16px;
+    color: var(--accent);
+}
 
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -715,6 +736,10 @@
             <button onclick="copyRodsResult()">نسخ النتيجة</button>
             <button type="button" onclick="printResult()">مشاركة</button>
         </div>
+<div class="form-group22">
+    <input type="text" id="name" placeholder="اسم العميل">
+    <input type="text" id="num" placeholder="رقم الهاتف" pattern="[0-9٠-٩]*" inputmode="numeric">
+</div>
 
         <div id="rodsResult">
             <img src="png 2.png" class="result-logo" alt="شعار المؤسسة">
@@ -1149,15 +1174,30 @@
                 `;
             }
 
-            document.getElementById('rodsTotal').innerHTML = `
-                ${totalsHtml}
-                <div>إجمالي الكمية بالطن ⚖️: ${displayedTotalWeight} طن</div>
-                ${wireSummary}
-                <div class="total-price">إجمالي سعر الكمية💵: ${displayedTotalSum} ر.ي</div>
-                <div class="price-in-words" style="font-size": ${fontSize}px">${priceInWords}</div>
-            `;
 
-            document.getElementById('rodsNote').innerText = priceNote;
+
+            // أضف هذه الأسطر في بداية الجزء قبل innerHTML
+const name = document.getElementById("name").value.trim();
+const phone = document.getElementById("num").value.trim();
+
+const clientInfo = `
+    ${name ? `<div class="printed-client">👤: ${name}</div>` : ""}
+    ${phone ? `<div class="printed-client">📞: ${phone}</div>` : ""}
+    ${(name || phone) ? `<hr style="margin: 10px 0; border: 1px solid var(--glass-border)">` : ""}
+`;
+
+document.getElementById('rodsTotal').innerHTML = `
+
+    ${totalsHtml}
+    <div>إجمالي الكمية بالطن ⚖️: ${displayedTotalWeight} طن</div>
+    ${wireSummary}
+    <div class="total-price">إجمالي سعر الكمية💵: ${displayedTotalSum} ر.ي</div>
+    <div class="price-in-words" style="font-size": ${fontSize}px">${priceInWords}</div>
+${clientInfo}
+`;
+
+
+document.getElementById('rodsNote').innerText = priceNote;
             document.getElementById('rodsResult').style.display = 'block';
 
             const resultHtml = document.getElementById('rodsResult').innerHTML;
@@ -1413,7 +1453,7 @@
             document.getElementById('rodsNote').innerText = priceNote;
             document.getElementById('rodsResult').style.display = 'block';
         }
-        
+
         function showAddItemDialog() {
             document.getElementById('dialogOverlay').style.display = 'flex';
             document.getElementById('itemType').dispatchEvent(new Event('change'));

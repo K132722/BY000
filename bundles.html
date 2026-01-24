@@ -275,6 +275,19 @@
             background: rgba(0,0,0,0.2);
             color: white;
         }
+        .form-group22 input {
+                    width: 150px;
+                    padding:7px;
+                     margin-top: 15px;
+         margin-right: 5px;
+                    font-size: 18px;
+                    border: 2px solid var(--glass-border);
+                    border-radius: 8px;
+                    text-align: center;
+                    direction: ltr;
+                    background: rgba(0,0,0,0.2);
+                    color: white;
+                }
 
         .price-input {
             margin-top: 15px;
@@ -465,6 +478,24 @@
               text-align: right;
               z-index: 10;
             }
+        form-group22 input {
+                    width: 150px;
+                    padding:7px;
+                     margin-top: 15px;
+         margin-right: 5px;
+                    font-size: 18px;
+                    border: 2px solid var(--glass-border);
+                    border-radius: 8px;
+                    text-align: center;
+                    direction: ltr;
+                    background: rgba(0,0,0,0.2);
+                    color: white;
+                }
+
+        .printed-client {
+            text-align: right;
+            direction: rtl;
+        }
 
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -532,6 +563,13 @@
             <button onclick="calculateBundles()">حساب</button>
             <button onclick="copyBundlesResult()">نسخ النتيجة</button>
             <button onclick="printResult()">مشاركة</button>
+        </div>
+        <div class="form-group22">
+            <input type="text" id="name" placeholder="اسم العميل">
+
+
+
+            <input type="text" id="num" placeholder="رقم الهاتف" pattern="[0-9٠-٩]*" inputmode="numeric">
         </div>
 
         <div id="bundlesResult" style="position: relative;">
@@ -753,12 +791,17 @@
             const displayedTotalWeight = window.inputIsArabic ? toArabicDigits(totalWeight.toFixed(3)) : totalWeight.toFixed(3);
             const displayedTotalPrice = window.inputIsArabic ? toArabicDigits(formatNumber(totalPrice.toFixed(2))) : formatNumber(totalPrice.toFixed(2));
             const displayedNotePrice = window.inputIsArabic ? toArabicDigits(formatNumber(pricePerTon)) : formatNumber(pricePerTon);
-
+             let name = document.getElementById("name").value;
+            let phone = document.getElementById("num").value;
             document.getElementById('bundlesTotal').innerHTML = `
                 <div>إجمالي البنادل: ${displayedTotalBundles}</div>
                 <div>الوزن الإجمالي⚖️: ${displayedTotalWeight} طن</div>
                 <div class="total-price">السعر الإجمالي💵: ${displayedTotalPrice} ر.س</div>
                 <div class="price-in-words" style="font-size: ${fontSize}px">${priceInWords}</div>
+                  <hr>
+            ${name ? `<div class="printed-client">👤: ${name}</div>` : ""}
+            ${phone ? `<div class="printed-client">📞: ${phone}</div>` : ""}
+            ${(name || phone) ? `<hr>` : ""}
             `;
 
             document.getElementById('bundlesNote').innerText = `ملاحظة: هذا الحساب بسعر ${displayedNotePrice} ريال سعودي للطن`;
