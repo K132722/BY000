@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bina-yemen-v20';
+const CACHE_NAME = 'bina-yemen-v22';
 const ASSETS_TO_CACHE = [
 
   'index.html',
