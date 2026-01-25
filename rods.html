@@ -661,6 +661,114 @@
     font-size: 16px;
     color: var(--accent);
 }
+.smart-input-btn {
+    background: linear-gradient(135deg, #ff9800, #ff5722);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    margin-right: 5px;
+
+    padding: 10px 0;
+    width: 30%;
+    margin-bottom: 7px;
+    border-radius: 14px;
+    font-size: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.smart-input-btn:hover {
+    background: linear-gradient(135deg, #ff5722, #ff9800);
+    transform: translateY(-2px);
+}
+
+.smart-input-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.smart-input-box {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px;
+    padding: 25px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+.smart-input-box h3 {
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.smart-input-textarea {
+    width: 100%;
+    height: 150px;
+    padding: 15px;
+    font-size: 16px;
+    background: rgba(0,0,0,0.3);
+    color: white;
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    resize: vertical;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.smart-input-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.smart-input-buttons button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.smart-input-add {
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+    border: 1px solid var(--glass-border);
+    color: white;
+}
+
+.smart-input-cancel {
+    background: rgba(255, 107, 107, 0.2);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    color: #ff6b6b;
+}
+
+.smart-input-add:hover {
+    background: linear-gradient(135deg, var(--accent), var(--secondary));
+}
+
+.smart-input-cancel:hover {
+    background: rgba(255, 107, 107, 0.3);
+}
+
+.input-info {
+    font-size: 14px;
+    color: #aaa;
+    margin-top: 10px;
+    text-align: center;
+}
 
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -722,6 +830,11 @@
             <span style="font-size: 18px;">＋</span> إضافة (مقاسات جريد ٦٠ او سلك تربيط)
         </button>
 
+
+
+ <button class="smart-input-btn" onclick="showSmartInputDialog()">
+‎    🧠 إدخال ذكي وسريع
+</button>
         <!-- حاوية العناصر المضافة -->
         <div id="additionalItemsContainer"></div>
 
@@ -782,6 +895,28 @@
             <div class="price-note" id="rodsNote"></div>
         </div>
 
+<div class="smart-input-dialog" id="smartInputDialog">
+    <div class="smart-input-box">
+        <h3>🧠 الإدخال الذكي والسريع</h3>
+        <textarea class="smart-input-textarea" id="smartInputText" 
+                  placeholder="الصق أو اكتب الطلب هنا...
+‎مثال: 
+‎طن ابو ١٦
+‎٢ بندل ابو ١٢
+‎نص طن ابو ١٤ ضغط ٦٠
+‎٣ سيخ ابو ٨ جريد ٦٠"></textarea>
+
+        <div class="input-info">
+‎            💡 يفهم: طن، بندل، سيخ، نص، ربع، ابو، مقاس، ضغط ٦٠، جريد ٦٠
+        </div>
+
+        <div class="smart-input-buttons">
+            <button class="smart-input-add" onclick="processSmartInput()">إضافة إلى الحقول</button>
+            <button class="smart-input-cancel" onclick="hideSmartInputDialog()">إلغاء</button>
+        </div>
+    </div>
+</div>
+
         <div class="signature">
             تصميم وبرمجة المهندس / أبو جراح الخولاني
         </div>
@@ -808,17 +943,34 @@
     </div>
 
     <script>
-        const steelData = {
-            rods: {
-                "20": 32,
-                "18": 40,
-                "16": 50,
-                "14": 66,
-                "12": 90,
-                "10": 130,
-                "8": 200
-            }
-        };
+       const steelData = {
+    rods: {
+        "20": 32,
+        "18": 40,
+        "16": 50,
+        "14": 66,
+        "12": 90,
+        "10": 130,
+        "8": 200
+    }
+};
+
+// === أضف هذه البيانات لتحويل الطن والبندل إلى أسياخ ===
+const bundleSizes = {
+    "8": 420,
+    "10": 270, 
+    "12": 180,
+    "14": 136,
+    "16": 104,
+    "18": 82,
+    "20": 66
+};
+
+// للتوافق مع دوال الإدخال الذكي
+const steelDataExtended = {
+    rodsPerTon: steelData.rods,  // نفس البيانات
+    rodsPerBundle: bundleSizes    // بيانات البنادل
+};
 
         let customItems = [];
         let wireItems = [];
@@ -1742,7 +1894,7 @@ document.getElementById('rodsNote').innerText = priceNote;
                 downloadLink.href = image;
                 downloadLink.download = inventoryMode ? 'حساب_المخزون.png' : 'حساب_الأسياخ.png';
                 downloadLink.click();
-               
+
                 if (navigator.share && navigator.onLine) {
                     canvas.toBlob(function (blob) {
                         const file = new File([blob], inventoryMode ? "حساب_المخزون.png" : "حساب_الأسياخ.png", { type: "image/png" });
@@ -1756,7 +1908,312 @@ document.getElementById('rodsNote').innerText = priceNote;
                 }
             });
         }
-        //كلااام 
+
+
+
+// دالة لإظهار نافذة الإدخال الذكي
+function showSmartInputDialog() {
+    document.getElementById('smartInputDialog').style.display = 'flex';
+    document.getElementById('smartInputText').focus();
+}
+
+// دالة لإخفاء نافذة الإدخال الذكي
+function hideSmartInputDialog() {
+    document.getElementById('smartInputDialog').style.display = 'none';
+    document.getElementById('smartInputText').value = '';
+}
+
+// محددات نوع الحديد
+const steelTypeKeywords = {
+    gr60: ['ضغط ٦٠', 'جريد ٦٠', '٦٠', 'gr60', 'g60','جريد 60','ضغط 60'],
+    gr40: ['ضغط ٤٠', 'جريد ٤٠', '٤٠', 'gr40', 'g40', 'ضغط', 'جريد']
+};
+
+// تحديد نوع الحديد من النص
+function detectSteelType(text) {
+    const arabicText = text.toLowerCase();
+
+    // البحث عن جريد ٦٠ أولاً
+    for (const keyword of steelTypeKeywords.gr60) {
+        if (arabicText.includes(keyword.toLowerCase())) {
+            return 'gr60';
+        }
+    }
+
+    // البحث عن جريد ٤٠
+    for (const keyword of steelTypeKeywords.gr40) {
+        if (arabicText.includes(keyword.toLowerCase())) {
+            return 'gr40';
+        }
+    }
+
+    // الافتراضي جريد ٤٠
+    return 'gr40';
+}
+
+// دالة ذكية لمعالجة الإدخال
+function processSmartInput() {
+    const inputText = document.getElementById('smartInputText').value.trim();
+    if (!inputText) {
+        alert('الرجاء إدخال نص الطلب أولاً');
+        return;
+    }
+
+    const lines = inputText.split('\n').filter(line => line.trim());
+    const results = {
+        gr40: {},  // جريد ٤٠
+        gr60: {}   // جريد ٦٠
+    };
+
+    // تحليل كل سطر
+    lines.forEach(line => {
+        const lineText = line.trim();
+
+        // تحديد نوع الحديد لهذا السطر
+        const steelType = detectSteelType(lineText);
+
+        // استخراج الكمية والنوع والمقاس
+        const { quantity, unitType, size } = parseLine(lineText);
+
+        if (quantity > 0 && size) {
+            // تحويل الكمية إلى أسياخ
+            const rodsCount = convertToRods(quantity, size, unitType);
+
+            // تخزين النتيجة بناءً على نوع الحديد
+            if (!results[steelType][size]) {
+                results[steelType][size] = 0;
+            }
+            results[steelType][size] += rodsCount;
+        }
+    });
+
+    // ملء الحقول تلقائياً
+    fillInputFields(results);
+
+    // إخفاء النافذة وإظهار رسالة نجاح
+    hideSmartInputDialog();
+    showSuccessMessage(results);
+}
+
+// تحليل السطر الواحد
+function parseLine(text) {
+    let quantity = 1;
+    let unitType = 'rod'; // الافتراضي سيخ
+    let size = null;
+
+    // تحويل الأرقام العربية
+    text = arabicToEnglish(text);
+
+    // البحث عن نوع الوحدة
+    if (text.includes('طن')) {
+        unitType = 'ton';
+        // البحث عن تركيبات مع طن
+        if (text.includes('نص طن') || text.includes('نصف طن')) {
+            quantity = 0.5;
+        } else if (text.includes('ربع طن')) {
+            quantity = 0.25;
+        } else if (text.includes('ثلث طن')) {
+            quantity = 0.333;
+        } else if (text.includes('طن ونص') || text.includes('طن ونصف')) {
+            quantity = 1.5;
+        } else if (text.includes('طن وربع')) {
+            quantity = 1.25;
+        } else if (text.includes('طن الا ربع')) {
+            quantity = 0.75;
+        } else if (text.includes('طن الا نص') || text.includes('طن الا نصف')) {
+            quantity = 0.5;
+        } else {
+            // البحث عن رقم قبل طن
+            const tonMatch = text.match(/(\d+(\.\d+)?)\s*طن/);
+            if (tonMatch) {
+                quantity = parseFloat(tonMatch[1]);
+            }
+        }
+    } else if (text.includes('بندل')) {
+        unitType = 'bundle';
+        // البحث عن رقم قبل بندل
+        const bundleMatch = text.match(/(\d+(\.\d+)?)\s*بندل/);
+        if (bundleMatch) {
+            quantity = parseFloat(bundleMatch[1]);
+        }
+    } else if (text.includes('سيخ')) {
+        unitType = 'rod';
+        // البحث عن رقم قبل سيخ
+        const rodMatch = text.match(/(\d+(\.\d+)?)\s*سيخ/);
+        if (rodMatch) {
+            quantity = parseFloat(rodMatch[1]);
+        }
+    }
+
+    // استخراج المقاس
+    const sizeMatch = text.match(/(\d+)\s*م/);
+    if (sizeMatch) {
+        size = sizeMatch[1];
+    } else {
+        // البحث عن مقاس بعد "ابو"
+        const abuMatch = text.match(/ابو\s*(\d+)/);
+        if (abuMatch) {
+            size = abuMatch[1];
+        }
+    }
+
+    // التحقق من صحة المقاس - معدل ليتناسب مع بياناتك
+    if (size && !steelData.rods[size]) {
+        size = null;
+    }
+
+    return { quantity, unitType, size };
+}
+
+// تحويل الأرقام العربية
+function arabicToEnglish(text) {
+    const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+    let result = text;
+
+    for (let i = 0; i < arabicDigits.length; i++) {
+        result = result.replace(new RegExp(arabicDigits[i], 'g'), i);
+    }
+
+    return result;
+}
+
+// تحويل الكمية إلى أسياخ - معدلة
+function convertToRods(quantity, size, unitType) {
+    const sizeStr = size.toString();
+
+    switch(unitType) {
+        case 'ton':
+            // استخدم steelData.rods للطن
+            const rodsPerTon = steelData.rods[sizeStr] || 0;
+            return Math.round(quantity * rodsPerTon);
+
+        case 'bundle':
+            // بيانات البنادل المضافة
+            const bundleSizes = {
+                "8": 420,
+                "10": 270, 
+                "12": 180,
+                "14": 136,
+                "16": 104,
+                "18": 82,
+                "20": 66
+            };
+            const rodsPerBundle = bundleSizes[sizeStr] || 0;
+            return Math.round(quantity * rodsPerBundle);
+
+        case 'rod':
+            return Math.round(quantity);
+
+        default:
+            return Math.round(quantity);
+    }
+}
+
+// ملء الحقول تلقائياً - معدلة
+function fillInputFields(results) {
+    // ملء حقول جريد ٤٠
+    Object.keys(results.gr40).forEach(size => {
+        const count = results.gr40[size];
+        const inputId = `rod-${size}`;
+        const inputElement = document.getElementById(inputId);
+
+        if (inputElement) {
+            // إذا كان الحقل فارغاً، نملأه بالقيمة الجديدة
+            // إذا كان به قيمة، نجمع مع القيمة الموجودة
+            const currentValue = parseFloat(inputElement.value) || 0;
+            inputElement.value = currentValue + count;
+
+            // تشغيل حدث التغيير لتنشيط أي حساب تلقائي
+            inputElement.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+    });
+
+    // ملء حقول جريد ٦٠ (إذا كان هناك زر لإضافتها)
+    if (Object.keys(results.gr60).length > 0) {
+        // نفتح نافذة إضافة جريد ٦٠
+        showAddItemDialog();
+
+        // ننتظر قليلاً لتحميل الحقول
+        setTimeout(() => {
+            // نختار نوع جريد ٦٠
+            const itemTypeSelect = document.getElementById('itemType');
+            if (itemTypeSelect) {
+                itemTypeSelect.value = 'gr60';
+                itemTypeSelect.dispatchEvent(new Event('change'));
+
+                // ننتظر أكثر قليلاً لتظهر الحقول
+                setTimeout(() => {
+                    Object.keys(results.gr60).forEach(size => {
+                        const count = results.gr60[size];
+                        const inputId = `gr60-${size}`;
+                        const inputElement = document.getElementById(inputId);
+
+                        if (inputElement) {
+                            inputElement.value = count;
+
+                            // تشغيل حدث التغيير
+                            const event = new Event('input', { bubbles: true });
+                            inputElement.dispatchEvent(event);
+                        }
+                    });
+
+                    // نضيف السعر الافتراضي
+                    const priceInput = document.getElementById('gr60Price');
+                    if (priceInput && !priceInput.value) {
+                        priceInput.value = '400000';
+                    }
+                }, 500);
+            }
+        }, 300);
+    }
+}
+
+// إظهار رسالة نجاح
+function showSuccessMessage(results) {
+    let message = '✅ تم إدخال البيانات بنجاح:\n\n';
+    let totalItems = 0;
+
+    // حساب جريد ٤٠
+    const gr40Items = Object.keys(results.gr40);
+    if (gr40Items.length > 0) {
+        message += 'جريد ٤٠:\n';
+        gr40Items.forEach(size => {
+            message += `  • ${size}م: ${results.gr40[size]} سيخ\n`;
+            totalItems += results.gr40[size];
+        });
+    }
+
+    // حساب جريد ٦٠
+    const gr60Items = Object.keys(results.gr60);
+    if (gr60Items.length > 0) {
+        message += '\nجريد ٦٠:\n';
+        gr60Items.forEach(size => {
+            message += `  • ${size}م: ${results.gr60[size]} سيخ\n`;
+            totalItems += results.gr60[size];
+        });
+    }
+
+    message += `\nالإجمالي: ${totalItems} سيخ`;
+
+    alert(message);
+}
+
+// إضافة اختصار لوحة المفاتيح للنافذة
+document.addEventListener('keydown', function(event) {
+    const dialog = document.getElementById('smartInputDialog');
+    if (dialog.style.display === 'flex') {
+        // Esc لإغلاق النافذة
+        if (event.key === 'Escape') {
+            hideSmartInputDialog();
+        }
+        // Ctrl+Enter لإضافة البيانات
+        if (event.ctrlKey && event.key === 'Enter') {
+            processSmartInput();
+        }
+    }
+});
+
+
     </script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <!-- تضمين ملف الآلة الحاسبة -->
