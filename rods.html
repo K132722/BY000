@@ -661,21 +661,50 @@
     font-size: 16px;
     color: var(--accent);
 }
-.smart-input-btn {
-    background: linear-gradient(135deg, #ff9800, #ff5722);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
-    margin-right: 5px;
 
-    padding: 10px 0;
-    width: 30%;
-    margin-bottom: 7px;
-    border-radius: 14px;
-    font-size: 8px;
+.smart-input-btn {
+    /* ألوانك ومتغيراتك الأصلية */
+    background: linear-gradient(135deg, #2c3e50, #4ca1af);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+    width: 50px; 
+    height: 50px; 
+    border-radius: 50%; 
+    display: block;      
+    margin: 0 auto;      
+    flex: none !important; 
+    padding: 0;
+    text-align: center;
+    line-height: 50px; 
+    font-size: 10px;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
+display: flex;
+align-items: center;
+justify-content: center;
+
+
+    /* تشغيل حركة التوهج الاحترافية */
+    animation: ai-glow-fixed 3s infinite ease-in-out;
 }
+
+/* حركة التوهج (الزر ثابت والنور يتحرك) */
+@keyframes ai-glow-fixed {
+    0% {
+        /* توهج خفيف وقريب */
+        box-shadow: 0 0 10px rgba(76, 161, 175, 0.4), 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+    50% {
+        /* التوهج يتمدد ويصبح ساطعاً (كأن الزر يشحن طاقة) */
+        box-shadow: 0 0 25px rgba(76, 161, 175, 0.8), 0 4px 20px rgba(0, 0, 0, 0.6);
+    }
+    100% {
+        /* يعود للهدوء */
+        box-shadow: 0 0 10px rgba(76, 161, 175, 0.4), 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+}
+
 
 .smart-input-btn:hover {
     background: linear-gradient(135deg, #ff5722, #ff9800);
@@ -718,7 +747,7 @@
     width: 100%;
     height: 150px;
     padding: 15px;
-    font-size: 18px;
+    font-size: 20px;
     background: rgba(0,0,0,0.3);
     color: white;
     border: 1px solid var(--glass-border);
@@ -769,7 +798,25 @@
     margin-top: 10px;
     text-align: center;
 }
+.result-logo111 {
+    /* 1. إلغاء الوضع المطلق لأنه يخرجه من توازن النص */
+    position: relative; 
 
+    /* 2. تحديد الطول (والعرض تلقائي ليحافظ على الأبعاد) */
+    height: 42px; /* جرب 30px أو 35px عشان يكون متناسق داخل دائرة الـ 50px */
+    width: auto;
+
+    /* 3. التوسيط السحري */
+    display: block;
+    margin: 0 auto; /* يوسطه أفقياً */
+
+    /* 4. لضمان التوسيط العمودي تماماً */
+    transform: translateY(0%); /* يدف الصورة للأسفل قليلاً لتعادل الفراغ */
+
+    /* إلغاء أي قيم قديمة */
+    padding: 0;
+    flex: none !important;
+}
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -831,14 +878,15 @@
         </button>
 
 
- 
- <button class="smart-input-btn" onclick="showSmartInputDialog()">
-‎    🧠 إدخال ذكي وسريع
-</button>
+
+
         <!-- حاوية العناصر المضافة -->
         <div id="additionalItemsContainer"></div>
 
         <div class="form-group price-input">
+<button class="smart-input-btn" onclick="showSmartInputDialog()">
+‎     <img src="png 2.png" class="result-logo111" alt="شعار المؤسسة">
+</button>
             <label for="rodPrice">سعر الطن (ريال يمني)</label>
             <!-- حقل السعر أصبح نصي للسماح بالأرقام العربية والإنجليزية -->
             <input type="text" id="rodPrice" placeholder="400000" pattern="[0-9٠-٩]*" inputmode="numeric">
@@ -905,11 +953,11 @@
 ‎٢ بندل ابو ١٢
 ‎نص طن ابو ١٤ ضغط ٦٠
 ‎٣ سيخ ابو ٨ جريد ٦٠"></textarea>
-        
+
         <div class="input-info">
 ‎            💡 يفهم: طن، بندل، سيخ، نص، ربع، ابو، مقاس، ضغط ٦٠، جريد ٦٠
         </div>
-        
+
         <div class="smart-input-buttons">
             <button class="smart-input-add" onclick="processSmartInput()">إضافة إلى الحقول</button>
             <button class="smart-input-cancel" onclick="hideSmartInputDialog()">إلغاء</button>
@@ -1326,7 +1374,7 @@ const steelDataExtended = {
                 `;
             }
 
-            
+
 
             // أضف هذه الأسطر في بداية الجزء قبل innerHTML
 const name = document.getElementById("name").value.trim();
@@ -1339,7 +1387,7 @@ const clientInfo = `
 `;
 
 document.getElementById('rodsTotal').innerHTML = `
-    
+
     ${totalsHtml}
     <div>إجمالي الكمية بالطن ⚖️: ${displayedTotalWeight} طن</div>
     ${wireSummary}
@@ -1605,7 +1653,7 @@ document.getElementById('rodsNote').innerText = priceNote;
             document.getElementById('rodsNote').innerText = priceNote;
             document.getElementById('rodsResult').style.display = 'block';
         }
-        
+
         function showAddItemDialog() {
             document.getElementById('dialogOverlay').style.display = 'flex';
             document.getElementById('itemType').dispatchEvent(new Event('change'));
@@ -1790,40 +1838,72 @@ document.getElementById('rodsNote').innerText = priceNote;
             updateWireDisplay();
         }
 
-        function copyRodsResult() {
-            const resultElement = document.getElementById('rodsResult');
-            if (resultElement.style.display === 'none') {
-                alert("لا توجد نتيجة لحسابها بعد");
-                return;
-            }
+         function copyRodsResult() {
+    const resultElement = document.getElementById('rodsResult');
+    if (resultElement.style.display === 'none') {
+        alert("لا توجد نتيجة لحسابها بعد");
+        return;
+    }
 
-            let resultText = inventoryMode ? "نتيجة حساب المخزون\n" : "نتيجة حساب الأسياخ\n";
-            resultText += "------------------------\n";
+    // تحديد العنوان بناءً على الوضع الحالي
+    let resultText = inventoryMode ? "نتيجة حساب المخزون\n" : "نتيجة حساب الأسياخ\n";
+    resultText += "----------------------------------\n";
 
-            const rows = document.querySelectorAll('#rodsResultBody tr');
-            rows.forEach(row => {
-                const cells = row.querySelectorAll('td');
-                resultText += `${cells[0].textContent}\t${cells[1].textContent}\t${cells[2].textContent}\t${cells[3].textContent}\n`;
-            });
+    // تغيير رؤوس الجدول بناءً على الوضع
+    if (inventoryMode) {
+        resultText += "   المقاس   | العدد |         الوزن (طن)           |\n";
+    } else {
+        resultText +=   
+ " المقاس | الكمية |           الاجمالي        |           \n";
+    }
+    resultText += "----------------------------------\n";
 
-            if (wireItems.length > 0 && !inventoryMode) {
-                resultText += "\nنتيجة سلك التربيط\n";
-                resultText += "------------------------\n";
-                wireItems.forEach(item => {
-                    const displayedQty = window.inputIsArabic ? toArabicDigits(item.qty) : item.qty;
-                    const total = item.qty * item.price;
-                    const displayedTotal = window.inputIsArabic ? toArabicDigits(formatNumber(total)) : formatNumber(total);
-                    resultText += `سلك تربيط\t${displayedQty}\tر.ي ${displayedTotal}\n`;
-                });
-            }
+    // جلب بيانات الجدول
+    const rows = document.querySelectorAll('#rodsResultBody tr');
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        if (cells.length >= 4) {
+            const size = cells[0].textContent.trim().padEnd(8);
+            const qty = cells[1].textContent.trim().padEnd(6);
+            // في المخزون نأخذ العمود الثالث (الوزن)، وفي الأسياخ نأخذ العمود الرابع (السعر)
+            const lastCol = inventoryMode ? cells[2].textContent.trim().padEnd(20) : cells[3].textContent.trim().padEnd(20);
 
-            resultText += "\n" + document.getElementById('rodsTotal').innerText.replace(/<[^>]*>/g, '') + "\n";
-            resultText += document.getElementById('rodsNote').innerText;
-
-            navigator.clipboard.writeText(resultText)
-                .then(() => alert("تم نسخ النتيجة"))
-                .catch(() => alert("فشل نسخ النتيجة"));
+            resultText += `${size}|  ${qty}  | ${lastCol} \n`;
+            resultText += "----------------------------------\n";
         }
+    });
+
+    // إضافة سلك التربيط إذا لم نكن في وضع المخزون
+    if (wireItems.length > 0 && !inventoryMode) {
+        wireItems.forEach(item => {
+            const displayedQty = window.inputIsArabic ? toArabicDigits(item.qty) : item.qty;
+            const total = item.qty * item.price;
+            const displayedTotal = window.inputIsArabic ? toArabicDigits(formatNumber(total)) : formatNumber(total);
+
+            const wName = "سلك تربيط".padEnd(8);
+            const wQty = String(displayedQty).padEnd(6);
+            const wTotal = (displayedTotal + " ر.ي").padEnd(20);
+
+            resultText += `${wName}|  ${wQty}  |  ${wTotal} \n`;
+            resultText += "----------------------------------\n";
+        });
+    }
+
+    // جلب الإجماليات والتفقيط والملاحظة (تعمل مع الوضعين)
+    const totalSection = document.getElementById('rodsTotal').innerText;
+    const noteSection = document.getElementById('rodsNote').innerText;
+
+    resultText += "\n" + totalSection + "\n";
+    if (noteSection.trim() !== "") {
+        resultText += noteSection;
+    }
+
+    // تنفيذ عملية النسخ
+    navigator.clipboard.writeText(resultText)
+        .then(() => alert("✅ تم نسخ النتيجة بنجاح"))
+        .catch(() => alert("❌ فشل نسخ النتيجة"));
+}
+
 
         window.addEventListener('load', () => {
             // ← نطفي أي أوضاع أخرى
@@ -1936,16 +2016,16 @@ const steelTypeKeywords = {
 function detectSteelType(text) {
     const arabicText = text.toLowerCase();
     const searchText = arabicToEnglish(arabicText);
-    
+
     console.log(`فحص نوع الحديد للنص: "${text}"`);
-    
+
     // **الخوارزمية البسيطة:**
     // 1. أولاً: البحث عن أي إشارة لجريد 60 في النص كله
     // 2. ثانياً: البحث عن أي إشارة لجريد 40 في النص كله
     // 3. ثالثاً: الافتراضي جريد 40
-    
+
     // ========== الخطوة 1: البحث عن جريد 60 ==========
-    
+
     // أنماط جريد 60 - نبحث عنهم في النص كله
     const gr60Patterns = [
         // أنماط بالعربي
@@ -1953,17 +2033,17 @@ function detectSteelType(text) {
         /ضغط[^\d]*60|ضغط[^\d]*٦٠/,
         /60[^\d]*جريد|٦٠[^\d]*جريد/,
         /60[^\d]*ضغط|٦٠[^\d]*ضغط/,
-        
+
         // أنماط بالإنجليزي
         /gr[^\d]*60|g[^\d]*60/i,
         /60[^\d]*gr|60[^\d]*g/i,
-        
+
         // كلمات مفتاحية منفصلة
         /\bgr60\b|\bg60\b/i,
         /\bضغط60\b|\bجريد60\b/,
         /\bضغط٦٠\b|\bجريد٦٠\b/
     ];
-    
+
     // فحص النص الكامل لكل الأنماط
     for (const pattern of gr60Patterns) {
         // فحص النص العربي
@@ -1971,37 +2051,37 @@ function detectSteelType(text) {
             console.log(`✅ وجدت جريد 60 (عربي): ${pattern.source} في "${text}"`);
             return 'gr60';
         }
-        
+
         // فحص النص بعد التحويل للإنجليزي
         if (pattern.test(searchText)) {
             console.log(`✅ وجدت جريد 60 (إنجليزي): ${pattern.source} في "${text}"`);
             return 'gr60';
         }
     }
-    
+
     // أيضًا نبحث عن "60" أو "٦٠" إذا كانت بمفردها أو مع إشارة لنوع
     const has60 = arabicText.includes('60') || arabicText.includes('٦٠') || searchText.includes('60');
-    
+
     if (has60) {
         // نتحقق أن الرقم 60 ليس جزءًا من كمية مثل "60 سيخ"
         const isQuantityPattern = /60\s+(سيخ|اسياخ|جريدة|جريده|ابو|مقاس)|٦٠\s+(سيخ|اسياخ|جريدة|جريده|ابو|مقاس)/;
-        
+
         if (!isQuantityPattern.test(arabicText) && !isQuantityPattern.test(searchText)) {
             // إذا لم يكن كمية، نبحث عن إشارات أخرى لنوع الحديد
             const hasSteelKeyword = arabicText.includes('ضغط') || 
                                    arabicText.includes('جريد') || 
                                    searchText.includes('gr') || 
                                    searchText.includes('g');
-            
+
             if (hasSteelKeyword) {
                 console.log(`✅ وجدت 60 مع إشارة لنوع حديد في "${text}"`);
                 return 'gr60';
             }
         }
     }
-    
+
     // ========== الخطوة 2: البحث عن جريد 40 ==========
-    
+
     // أنماط جريد 40 - نبحث عنهم في النص كله
     const gr40Patterns = [
         // أنماط بالعربي
@@ -2009,17 +2089,17 @@ function detectSteelType(text) {
         /ضغط[^\d]*40|ضغط[^\d]*٤٠/,
         /40[^\d]*جريد|٤٠[^\d]*جريد/,
         /40[^\d]*ضغط|٤٠[^\d]*ضغط/,
-        
+
         // أنماط بالإنجليزي
         /gr[^\d]*40|g[^\د]*40/i,
         /40[^\d]*gr|40[^\d]*g/i,
-        
+
         // كلمات مفتاحية منفصلة
         /\bgr40\b|\bg40\b/i,
         /\bضغط40\b|\bجريد40\b/,
         /\bضغط٤٠\b|\bجريد٤٠\b/
     ];
-    
+
     // فحص النص الكامل لكل الأنماط
     for (const pattern of gr40Patterns) {
         // فحص النص العربي
@@ -2027,33 +2107,33 @@ function detectSteelType(text) {
             console.log(`✅ وجدت جريد 40 (عربي): ${pattern.source} في "${text}"`);
             return 'gr40';
         }
-        
+
         // فحص النص بعد التحويل للإنجليزي
         if (pattern.test(searchText)) {
             console.log(`✅ وجدت جريد 40 (إنجليزي): ${pattern.source} في "${text}"`);
             return 'gr40';
         }
     }
-    
+
     // أيضًا نبحث عن "40" أو "٤٠"
     const has40 = arabicText.includes('40') || arabicText.includes('٤٠') || searchText.includes('40');
     if (has40) {
         console.log(`✅ وجدت 40 في "${text}" - جريد 40`);
         return 'gr40';
     }
-    
+
     // ========== الخطوة 3: البحث عن كلمة "جريد" فقط ==========
     if (arabicText.includes('جريد') && !arabicText.includes('جريدة') && !arabicText.includes('جريده')) {
         console.log(`✅ وجدت "جريد" فقط في "${text}" - افتراضي جريد 40`);
         return 'gr40';
     }
-    
+
     // ========== الخطوة 4: البحث عن كلمة "ضغط" فقط ==========
     if (arabicText.includes('ضغط')) {
         console.log(`✅ وجدت "ضغط" فقط في "${text}" - افتراضي جريد 40`);
         return 'gr40';
     }
-    
+
     // ========== الخطوة 5: الافتراضي ==========
     console.log(`🔵 لم أجد أي إشارة لنوع حديد في "${text}" - افتراضي جريد 40`);
     return 'gr40';
@@ -2063,12 +2143,12 @@ function detectSteelType(text) {
 function arabicToEnglish(text) {
     const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
     let result = text;
-    
+
     for (let i = 0; i < arabicDigits.length; i++) {
         const regex = new RegExp(arabicDigits[i], 'g');
         result = result.replace(regex, i.toString());
     }
-    
+
     return result;
 }
 
@@ -2079,33 +2159,33 @@ function processSmartInput() {
         alert('الرجاء إدخال نص الطلب أولاً');
         return;
     }
-    
+
     const lines = inputText.split('\n').filter(line => line.trim());
     const results = {
         gr40: {},  // جريد ٤٠
         gr60: {}   // جريد ٦٠
     };
-    
+
     // تحليل كل سطر
     lines.forEach(line => {
         const lineText = line.trim();
-        
+
         // تحديد نوع الحديد لهذا السطر
         const steelType = detectSteelType(lineText);
-        
+
         // استخراج الكمية والنوع والمقاس
         const { quantity, unitType, size } = parseLine(lineText);
-        
+
         if (quantity > 0 && size) {
             // تحويل الكمية إلى أسياخ
             const rodsCount = convertToRods(quantity, size, unitType);
-            
+
             // تخزين النتيجة بناءً على نوع الحديد
             if (!results[steelType][size]) {
                 results[steelType][size] = 0;
             }
             results[steelType][size] += rodsCount;
-            
+
             // عرض تفاصيل التحويل في الكونسول (للتتبع)
             console.log(`السطر: "${lineText}"`);
             console.log(`  - النوع: ${steelType}`);
@@ -2114,10 +2194,10 @@ function processSmartInput() {
             console.log(`  - عدد الأسياخ المحسوبة: ${rodsCount}`);
         }
     });
-    
+
     // ملء الحقول تلقائياً
     fillInputFields(results);
-    
+
     // إخفاء النافذة وإظهار رسالة نجاح
     hideSmartInputDialog();
     showSuccessMessage(results);
@@ -2126,14 +2206,14 @@ function processSmartInput() {
 function detectSteelType(text) {
     const arabicText = text.toLowerCase();
     const searchText = arabicToEnglish(arabicText);
-    
+
     console.log(`فحص نوع الحديد للنص: "${text}"`);
-    
+
     // **قاعدة جديدة: الرقم 60 أو ٦٠ يعتبر كمية وليس نوع حديد في الحالات التالية:**
     // 1. إذا كان الرقم 60 يليه مباشرة "سيخ" أو "اسياخ" أو "جريدة" أو "جريده"
     // 2. إذا كان الرقم 60 يليه مباشرة "ابو" أو "مقاس"
     // 3. إذا كان الرقم 60 في بداية الجملة ولا يتبعه كلمات تشير لنوع الحديد
-    
+
     const quantity60Patterns = [
         /60\s+(سيخ|اسياخ|جريدة|جريده)/i,
         /60\s+(ابو|مقاس)/i,
@@ -2142,7 +2222,7 @@ function detectSteelType(text) {
         /^60\s+/i,
         /^٦٠\s+/
     ];
-    
+
     // التحقق من أن الرقم 60 يمثل كمية
     let is60Quantity = false;
     for (const pattern of quantity60Patterns) {
@@ -2152,7 +2232,7 @@ function detectSteelType(text) {
             break;
         }
     }
-    
+
     // البحث عن جريد ٦٠ - فقط إذا لم يكن الرقم 60 يمثل كمية
     if (!is60Quantity) {
         for (const keyword of steelTypeKeywords.gr60) {
@@ -2168,7 +2248,7 @@ function detectSteelType(text) {
             }
         }
     }
-    
+
     // البحث عن جريد ٤٠
     for (const keyword of steelTypeKeywords.gr40) {
         const keywordLower = keyword.toLowerCase();
@@ -2179,14 +2259,14 @@ function detectSteelType(text) {
             return 'gr40';
         }
     }
-    
+
     // **التمييز الجديد: إذا كان هناك "جريد" بدون رقم بعده → جريد ٤٠ افتراضيًا**
     // لكن "جريدة" أو "جريده" تعني سيخ وليس نوع حديد
     if (arabicText.includes('جريد') && !arabicText.includes('جريدة') && !arabicText.includes('جريده')) {
         console.log(`تم التعرف على نوع حديد: جريد ٤٠ (افتراضي من كلمة "جريد")`);
         return 'gr40'; // جريد بدون رقم = جريد ٤٠ افتراضيًا
     }
-    
+
     console.log(`نوع الحديد الافتراضي: جريد ٤٠`);
     return 'gr40';
 }
@@ -2196,18 +2276,18 @@ function parseLine(text) {
     let quantity = 1; // الافتراضي 1 للكلمات المنفردة
     let unitType = 'rod'; // الافتراضي سيخ
     let size = null;
-    
+
     // أولاً: تحويل النص للبحث
     const searchText = arabicToEnglish(text.toLowerCase());
     console.log(`تحليل السطر: "${searchText}"`);
-    
+
     // ثانياً: استخراج المقاس أولاً
     size = extractSizeFromText(originalText);
     console.log(`المقاس المستخرج: ${size}`);
-    
+
     // ثالثاً: تحويل الكسور في النص أولاً لتسهيل المعالجة
     let processedText = searchText;
-    
+
     // تحويل الكلمات إلى كسور عشرية
     const fractionMap = {
         'نص': '0.5', 'نصف': '0.5',
@@ -2217,16 +2297,16 @@ function parseLine(text) {
         'نصين': '1', 'نصفين': '1',
         'ربعين': '0.5'
     };
-    
+
     // استبدال الكلمات بالكسور العشرية
     for (const [word, decimal] of Object.entries(fractionMap)) {
         const regex = new RegExp(word, 'g');
         processedText = processedText.replace(regex, decimal);
     }
-    
+
     // رابعاً: البحث عن التراكيب المختلفة
     let foundPattern = false;
-    
+
     // 1. نمط: رقم + طن + و + كسر (4 طن ونص، 2 طن وربع)
     const complexPattern = /(\d+(?:\.\d+)?)\s*طن\s*(و|و)\s*(0\.5|0\.25|0\.333|0\.666)/;
     let complexMatch = processedText.match(complexPattern);
@@ -2236,22 +2316,20 @@ function parseLine(text) {
         foundPattern = true;
         console.log(`نمط معقد مع رقم: ${complexMatch[1]} + ${complexMatch[3]} = ${quantity} طن`);
     }
-    
-  // 2. نمط: طن + و + كسر (طن ونص، طن وربع) - بدون رقم قبل طن - الحالة الجديدة - تم التعديل
-if (!foundPattern) {
-    // تحديث النمط ليكون أكثر شمولية
-    const tonWithFractionPattern = /^طن\s*(و|و)\s*(0\.5|0\.25|0\.333|0\.666)\b|^.*?\bطن\s*(و|و)\s*(0\.5|0\.25|0\.333|0\.666)\b.*$/;
-    let tonWithFractionMatch = processedText.match(tonWithFractionPattern);
-    if (tonWithFractionMatch) {
-        // الحصول على الكسر من المجموعة المناسبة
-        const fraction = tonWithFractionMatch[2] || tonWithFractionMatch[5];
-        quantity = 1 + parseFloat(fraction);
-        unitType = 'ton';
-        foundPattern = true;
-        console.log(`نمط طن وكسر منفرد: 1 + ${fraction} = ${quantity} طن`);
+
+    // 2. نمط: طن + و + كسر (طن ونص، طن وربع) - بدون رقم قبل طن
+    if (!foundPattern) {
+        const tonWithFractionPattern = /^طن\s*(و|و)\s*(0\.5|0\.25|0\.333|0\.666)\b|^.*?\bطن\s*(و|و)\s*(0\.5|0\.25|0\.333|0\.666)\b.*$/;
+        let tonWithFractionMatch = processedText.match(tonWithFractionPattern);
+        if (tonWithFractionMatch) {
+            const fraction = tonWithFractionMatch[2] || tonWithFractionMatch[5];
+            quantity = 1 + parseFloat(fraction);
+            unitType = 'ton';
+            foundPattern = true;
+            console.log(`نمط طن وكسر منفرد: 1 + ${fraction} = ${quantity} طن`);
+        }
     }
-}
-    
+
     // 3. نمط: كسر فقط مع طن (نص طن، ربع طن، ثلث طن)
     if (!foundPattern) {
         const fractionOnlyPattern = /(0\.5|0\.25|0\.333|0\.666)\s*طن/;
@@ -2263,20 +2341,24 @@ if (!foundPattern) {
             console.log(`نمط كسر فقط: ${quantity} طن`);
         }
     }
-    
+
     // 4. نمط: طن + إلا + كسر (طن إلا ربع، 2 طن إلا نص)
     if (!foundPattern) {
-        const exceptPattern = /(?:(\d+(?:\.\d+)?)\s*)?طن\s*إلا\s*(0\.5|0\.25|0\.333|0\.666)/;
-        let exceptMatch = processedText.match(exceptPattern);
-        if (exceptMatch) {
-            const baseQuantity = exceptMatch[1] ? parseFloat(exceptMatch[1]) : 1;
-            quantity = baseQuantity - parseFloat(exceptMatch[2]);
-            unitType = 'ton';
-            foundPattern = true;
-            console.log(`نمط إلا: ${baseQuantity} - ${exceptMatch[2]} = ${quantity} طن`);
-        }
+    // التعديل هنا: أضفنا ? بعد حرف إ ليقبل (إلا) أو (الا)
+    const exceptPattern = /(?:(\d+(?:\.\d+)?)\s*)?طن\s*(?:إلا|الا)\s*(0\.5|0\.25|0\.333|0\.666)/;
+
+    let exceptMatch = processedText.match(exceptPattern);
+
+    if (exceptMatch) {
+        const baseQuantity = exceptMatch[1] ? parseFloat(exceptMatch[1]) : 1;
+        quantity = baseQuantity - parseFloat(exceptMatch[2]);
+        unitType = 'ton';
+        foundPattern = true;
+        console.log(`نمط إلا/الا: ${baseQuantity} - ${exceptMatch[2]} = ${quantity} طن`);
     }
-    
+}
+
+
     // 5. نمط: كسر + و + كسر (نص وربع طن)
     if (!foundPattern) {
         const fractionAndFractionPattern = /(0\.5|0\.25|0\.333|0\.666)\s*(و|و)\s*(0\.5|0\.25|0\.333|0\.666)\s*طن/;
@@ -2288,7 +2370,7 @@ if (!foundPattern) {
             console.log(`نمط كسر وكسر: ${fractionAndFractionMatch[1]} + ${fractionAndFractionMatch[3]} = ${quantity} طن`);
         }
     }
-    
+
     // 6. نمط: رقم + طن فقط (4 طن)
     if (!foundPattern) {
         const simpleTonPattern = /(\d+(?:\.\d+)?)\s*طن/;
@@ -2300,8 +2382,87 @@ if (!foundPattern) {
             console.log(`نمط طن بسيط: ${quantity} طن`);
         }
     }
-    
-    // 7. نمط: رقم + بندل/بنادل فقط (2 بندل، 3 بنادل) - الحالة الجديدة
+
+    // 7. نمط: رقم مكتوب + طن (اثنين طن، ثلاثة طن)
+    if (!foundPattern) {
+        // أنماط الأرقام المكتوبة
+        const writtenNumbers = ['واحد', 'اثنين', 'ثلاثة', 'أربعة', 'خمسة', 'ستة', 'سبعة', 'ثمانية', 'تسعة', 'عشرة',
+                               'احد', 'اثنان', 'ثلاث', 'اربع', 'خمس', 'ست', 'سبع', 'ثمان', 'تسع', 'عشر',
+                               'واحدة', 'اثنتين', 'ثلاثه', 'اربعه', 'خمسه', 'سته', 'سبعه', 'ثمانيه', 'تسعه', 'عشره'];
+
+        let writtenNumber = null;
+        let writtenNumberStr = '';
+
+        for (const numWord of writtenNumbers) {
+            const pattern = new RegExp(`^${numWord}\\s*طن|\\b${numWord}\\s*طن\\b`, 'i');
+            if (pattern.test(processedText)) {
+                writtenNumber = convertArabicNumberWord(numWord);
+                writtenNumberStr = numWord;
+                break;
+            }
+        }
+
+        if (writtenNumber !== null) {
+            quantity = writtenNumber;
+            unitType = 'ton';
+            foundPattern = true;
+            console.log(`نمط رقم مكتوب مع طن: ${writtenNumberStr} = ${quantity} طن`);
+        }
+    }
+
+    // 8. نمط: رقم مكتوب + بندل/بنادل (أربعه بندل، خمسه بنادل)
+    if (!foundPattern) {
+        const writtenNumbers = ['واحد', 'اثنين', 'ثلاثة', 'أربعة', 'خمسة', 'ستة', 'سبعة', 'ثمانية', 'تسعة', 'عشرة',
+                               'احد', 'اثنان', 'ثلاث', 'اربع', 'خمس', 'ست', 'سبع', 'ثمان', 'تسع', 'عشر',
+                               'واحدة', 'اثنتين', 'ثلاثه', 'اربعه', 'خمسه', 'سته', 'سبعه', 'ثمانيه', 'تسعه', 'عشره'];
+
+        let writtenNumber = null;
+        let writtenNumberStr = '';
+
+        for (const numWord of writtenNumbers) {
+            const pattern = new RegExp(`^${numWord}\\s*(بندل|بنادل)|\\b${numWord}\\s*(بندل|بنادل)\\b`, 'i');
+            if (pattern.test(processedText)) {
+                writtenNumber = convertArabicNumberWord(numWord);
+                writtenNumberStr = numWord;
+                break;
+            }
+        }
+
+        if (writtenNumber !== null) {
+            quantity = writtenNumber;
+            unitType = 'bundle';
+            foundPattern = true;
+            console.log(`نمط رقم مكتوب مع بندل: ${writtenNumberStr} = ${quantity} بندل`);
+        }
+    }
+
+    // 9. نمط: رقم مكتوب + سيخ/اسياخ/جريدة/جريده (خمسه اسياخ، ستة سيخ)
+    if (!foundPattern) {
+        const writtenNumbers = ['واحد', 'اثنين', 'ثلاثة', 'أربعة', 'خمسة', 'ستة', 'سبعة', 'ثمانية', 'تسعة', 'عشرة',
+                               'احد', 'اثنان', 'ثلاث', 'اربع', 'خمس', 'ست', 'سبع', 'ثمان', 'تسع', 'عشر',
+                               'واحدة', 'اثنتين', 'ثلاثه', 'اربعه', 'خمسه', 'سته', 'سبعه', 'ثمانيه', 'تسعه', 'عشره'];
+
+        let writtenNumber = null;
+        let writtenNumberStr = '';
+
+        for (const numWord of writtenNumbers) {
+            const pattern = new RegExp(`^${numWord}\\s*(سيخ|اسياخ|جريدة|جريده)|\\b${numWord}\\s*(سيخ|اسياخ|جريدة|جريده)\\b`, 'i');
+            if (pattern.test(processedText)) {
+                writtenNumber = convertArabicNumberWord(numWord);
+                writtenNumberStr = numWord;
+                break;
+            }
+        }
+
+        if (writtenNumber !== null) {
+            quantity = writtenNumber;
+            unitType = 'rod';
+            foundPattern = true;
+            console.log(`نمط رقم مكتوب مع سيخ: ${writtenNumberStr} = ${quantity} سيخ`);
+        }
+    }
+
+    // 10. نمط: رقم + بندل/بنادل فقط (2 بندل، 3 بنادل)
     if (!foundPattern) {
         const numberBundlePattern = /(\d+(?:\.\d+)?)\s*(بندل|بنادل)/;
         let numberBundleMatch = processedText.match(numberBundlePattern);
@@ -2312,10 +2473,9 @@ if (!foundPattern) {
             console.log(`نمط رقم مع بندل: ${quantity} بندل`);
         }
     }
-    
-    // 8. نمط: طن فقط (بدون رقم) - يشمل "طن" يليه رقم مثل "طن 12"
+
+    // 11. نمط: طن فقط (بدون رقم) - يشمل "طن" يليه رقم مثل "طن 12"
     if (!foundPattern) {
-        // نمط "طن 12" أو "طن ١٦" أو "طن16"
         const tonWithSizePattern = /طن\s*(\d+)/;
         let tonWithSizeMatch = processedText.match(tonWithSizePattern);
         if (tonWithSizeMatch) {
@@ -2325,10 +2485,52 @@ if (!foundPattern) {
             console.log(`نمط طن مع مقاس: 1 طن (مقاس ${tonWithSizeMatch[1]})`);
         }
     }
-    
-    // 9. نمط: طن فقط (بدون رقم ولا مقاس بعده)
+
+    // 12. نمط: طن + ابو + رقم (طن ابو 16، طن ابو 12)
+    if (!foundPattern) {
+        const tonAbuPattern = /طن\s*(ابو|مقاس)\s*(\d+)/;
+        let tonAbuMatch = processedText.match(tonAbuPattern);
+        if (tonAbuMatch) {
+            quantity = 1;
+            unitType = 'ton';
+            foundPattern = true;
+            console.log(`نمط طن مع ابو/مقاس: 1 طن ${tonAbuMatch[1]} ${tonAbuMatch[2]}`);
+        }
+    }
+
+    // 13. نمط: رقم + طن + ابو/مقاس + رقم (2 طن ابو 16، 3 طن مقاس 12)
+    if (!foundPattern) {
+        const numberTonAbuPattern = /(\d+(?:\.\d+)?)\s*طن\s*(ابو|مقاس)\s*(\d+)/;
+        let numberTonAbuMatch = processedText.match(numberTonAbuPattern);
+        if (numberTonAbuMatch) {
+            quantity = parseFloat(numberTonAbuMatch[1]);
+            unitType = 'ton';
+            foundPattern = true;
+            console.log(`نمط رقم طن مع ابو/مقاس: ${quantity} طن ${numberTonAbuMatch[2]} ${numberTonAbuMatch[3]}`);
+        }
+    }
+
+    // 14. نمط: رقم مكتوب + طن + ابو/مقاس + رقم (اثنين طن ابو 16، ثلاثة طن مقاس 12)
+    if (!foundPattern) {
+        const writtenNumbers = ['واحد', 'اثنين', 'ثلاثة', 'أربعة', 'خمسة', 'ستة', 'سبعة', 'ثمانية', 'تسعة', 'عشرة',
+                               'احد', 'اثنان', 'ثلاث', 'اربع', 'خمس', 'ست', 'سبع', 'ثمان', 'تسع', 'عشر',
+                               'واحدة', 'اثنتين', 'ثلاثه', 'اربعه', 'خمسه', 'سته', 'سبعه', 'ثمانيه', 'تسعه', 'عشره'];
+
+        for (const numWord of writtenNumbers) {
+            const pattern = new RegExp(`${numWord}\\s*طن\\s*(ابو|مقاس)\\s*(\\d+)`, 'i');
+            if (pattern.test(processedText)) {
+                const match = processedText.match(pattern);
+                quantity = convertArabicNumberWord(numWord);
+                unitType = 'ton';
+                foundPattern = true;
+                console.log(`نمط رقم مكتوب طن مع ابو/مقاس: ${numWord} = ${quantity} طن ${match[1]} ${match[2]}`);
+                break;
+            }
+        }
+    }
+
+    // 15. نمط: طن فقط (بدون رقم ولا مقاس بعده)
     if (!foundPattern && processedText.includes('طن')) {
-        // التحقق أن "طن" ليس جزءًا من كلمة أخرى
         const tonAlonePattern = /\bطن\b/;
         if (tonAlonePattern.test(processedText)) {
             quantity = 1;
@@ -2337,8 +2539,8 @@ if (!foundPattern) {
             console.log(`نمط طن فقط: 1 طن`);
         }
     }
-    
-    // 10. نمط: بندل/بنادل + رقم (بندل 12، بنادل 16)
+
+    // 16. نمط: بندل/بنادل + رقم (بندل 12، بنادل 16)
     if (!foundPattern) {
         const bundleWithSizePattern = /(بندل|بنادل)\s*(\d+)/;
         let bundleWithSizeMatch = processedText.match(bundleWithSizePattern);
@@ -2349,8 +2551,8 @@ if (!foundPattern) {
             console.log(`نمط بندل مع مقاس: 1 بندل (مقاس ${bundleWithSizeMatch[2]})`);
         }
     }
-    
-    // 11. نمط: بندل/بنادل فقط
+
+    // 17. نمط: بندل/بنادل فقط
     if (!foundPattern) {
         const bundlePattern = /(بندل|بنادل)/;
         let bundleMatch = processedText.match(bundlePattern);
@@ -2361,198 +2563,201 @@ if (!foundPattern) {
             console.log(`نمط بندل فقط: 1 بندل`);
         }
     }
-    
-   // 12. نمط: رقم + ابو + رقم (30 ابو 16، 20 ابو 12)
-if (!foundPattern) {
-    const numberAbuPattern = /(\d+(?:\.\d+)?)\s*ابو\s*(\d+)/;
-    let numberAbuMatch = processedText.match(numberAbuPattern);
-    if (numberAbuMatch) {
-        quantity = parseFloat(numberAbuMatch[1]);
-        unitType = 'rod';
-        foundPattern = true;
-        console.log(`نمط رقم مع ابو ومقاس: ${quantity} سيخ ابو ${numberAbuMatch[2]}`);
-    }
-}
 
-// 13. نمط: رقم + مقاس + رقم (45 مقاس 14، 60 مقاس 16)
-if (!foundPattern) {
-    const numberSizePattern = /(\d+(?:\.\d+)?)\s*مقاس\s*(\d+)/;
-    let numberSizeMatch = processedText.match(numberSizePattern);
-    if (numberSizeMatch) {
-        quantity = parseFloat(numberSizeMatch[1]);
-        unitType = 'rod';
-        foundPattern = true;
-        console.log(`نمط رقم مع مقاس: ${quantity} سيخ مقاس ${numberSizeMatch[2]}`);
+    // 18. نمط: رقم + ابو + رقم (30 ابو 16، 20 ابو 12)
+    if (!foundPattern) {
+        const numberAbuPattern = /(\d+(?:\.\d+)?)\s*ابو\s*(\d+)/;
+        let numberAbuMatch = processedText.match(numberAbuPattern);
+        if (numberAbuMatch) {
+            quantity = parseFloat(numberAbuMatch[1]);
+            unitType = 'rod';
+            foundPattern = true;
+            console.log(`نمط رقم مع ابو ومقاس: ${quantity} سيخ ابو ${numberAbuMatch[2]}`);
+        }
     }
-}
 
-// 14. نمط: رقم + سيخ/اسياخ/جريدة/جريده + ابو/مقاس + رقم (45 سيخ ابو 8، 60 سيخ مقاس 14)
-if (!foundPattern) {
-    const numberRodAbuPattern = /(\d+(?:\.\d+)?)\s*(سيخ|اسياخ|جريدة|جريده)\s*(ابو|مقاس)\s*(\d+)/;
-    let numberRodAbuMatch = processedText.match(numberRodAbuPattern);
-    if (numberRodAbuMatch) {
-        quantity = parseFloat(numberRodAbuMatch[1]);
-        unitType = 'rod';
-        foundPattern = true;
-        console.log(`نمط رقم مع سيخ وابو/مقاس: ${quantity} سيخ ${numberRodAbuMatch[3]} ${numberRodAbuMatch[4]}`);
+    // 19. نمط: رقم + مقاس + رقم (45 مقاس 14، 60 مقاس 16)
+    if (!foundPattern) {
+        const numberSizePattern = /(\d+(?:\.\d+)?)\s*مقاس\s*(\d+)/;
+        let numberSizeMatch = processedText.match(numberSizePattern);
+        if (numberSizeMatch) {
+            quantity = parseFloat(numberSizeMatch[1]);
+            unitType = 'rod';
+            foundPattern = true;
+            console.log(`نمط رقم مع مقاس: ${quantity} سيخ مقاس ${numberSizeMatch[2]}`);
+        }
     }
-}
 
-// 15. نمط: رقم + سيخ/اسياخ/جريدة/جريده + رقم (12 سيخ 16، 3 جريدة 12)
-if (!foundPattern) {
-    const numberRodWithSizePattern = /(\d+(?:\.\d+)?)\s*(سيخ|اسياخ|جريدة|جريده)\s*(\d+)/;
-    let numberRodWithSizeMatch = processedText.match(numberRodWithSizePattern);
-    if (numberRodWithSizeMatch) {
-        quantity = parseFloat(numberRodWithSizeMatch[1]);
-        unitType = 'rod';
-        foundPattern = true;
-        console.log(`نمط رقم مع سيخ ومقاس: ${quantity} سيخ مقاس ${numberRodWithSizeMatch[3]}`);
+    // 20. نمط: رقم + سيخ/اسياخ/جريدة/جريده + ابو/مقاس + رقم (45 سيخ ابو 8، 60 سيخ مقاس 14)
+    if (!foundPattern) {
+        const numberRodAbuPattern = /(\d+(?:\.\d+)?)\s*(سيخ|اسياخ|جريدة|جريده)\s*(ابو|مقاس)\s*(\d+)/;
+        let numberRodAbuMatch = processedText.match(numberRodAbuPattern);
+        if (numberRodAbuMatch) {
+            quantity = parseFloat(numberRodAbuMatch[1]);
+            unitType = 'rod';
+            foundPattern = true;
+            console.log(`نمط رقم مع سيخ وابو/مقاس: ${quantity} سيخ ${numberRodAbuMatch[3]} ${numberRodAbuMatch[4]}`);
+        }
     }
-}
 
-// 16. نمط: رقم + سيخ/اسياخ/جريدة/جريده فقط (12 سيخ، 3 جريدة)
-if (!foundPattern) {
-    const numberRodPattern = /(\d+(?:\.\d+)?)\s*(سيخ|اسياخ|جريدة|جريده)/;
-    let numberRodMatch = processedText.match(numberRodPattern);
-    if (numberRodMatch) {
-        quantity = parseFloat(numberRodMatch[1]);
-        unitType = 'rod';
-        foundPattern = true;
-        console.log(`نمط رقم مع سيخ: ${quantity} سيخ`);
+    // 21. نمط: رقم + سيخ/اسياخ/جريدة/جريده + رقم (12 سيخ 16، 3 جريدة 12)
+    if (!foundPattern) {
+        const numberRodWithSizePattern = /(\d+(?:\.\d+)?)\s*(سيخ|اسياخ|جريدة|جريده)\s*(\d+)/;
+        let numberRodWithSizeMatch = processedText.match(numberRodWithSizePattern);
+        if (numberRodWithSizeMatch) {
+            quantity = parseFloat(numberRodWithSizeMatch[1]);
+            unitType = 'rod';
+            foundPattern = true;
+            console.log(`نمط رقم مع سيخ ومقاس: ${quantity} سيخ مقاس ${numberRodWithSizeMatch[3]}`);
+        }
     }
-}
 
-// 17. نمط: سيخ/اسياخ/جريدة/جريده + ابو/مقاس + رقم (سيخ ابو 16، جريدة مقاس 12)
-if (!foundPattern) {
-    const rodAbuPattern = /(سيخ|اسياخ|جريدة|جريده)\s*(ابو|مقاس)\s*(\d+)/;
-    let rodAbuMatch = processedText.match(rodAbuPattern);
-    if (rodAbuMatch) {
-        quantity = 1;
-        unitType = 'rod';
-        foundPattern = true;
-        console.log(`نمط سيخ مع ابو/مقاس: 1 سيخ ${rodAbuMatch[2]} ${rodAbuMatch[3]}`);
+    // 22. نمط: رقم + سيخ/اسياخ/جريدة/جريده فقط (12 سيخ، 3 جريدة)
+    if (!foundPattern) {
+        const numberRodPattern = /(\d+(?:\.\d+)?)\s*(سيخ|اسياخ|جريدة|جريده)/;
+        let numberRodMatch = processedText.match(numberRodPattern);
+        if (numberRodMatch) {
+            quantity = parseFloat(numberRodMatch[1]);
+            unitType = 'rod';
+            foundPattern = true;
+            console.log(`نمط رقم مع سيخ: ${quantity} سيخ`);
+        }
     }
-}
 
-// 18. نمط: سيخ/اسياخ/جريدة/جريده + رقم فقط (سيخ 16، جريدة 12)
-if (!foundPattern) {
-    const rodWithSizePattern = /(سيخ|اسياخ|جريدة|جريده)\s*(\d+)/;
-    let rodWithSizeMatch = processedText.match(rodWithSizePattern);
-    if (rodWithSizeMatch) {
-        quantity = 1;
-        unitType = 'rod';
-        foundPattern = true;
-        console.log(`نمط سيخ مع مقاس: 1 سيخ مقاس ${rodWithSizeMatch[2]}`);
-    }
-}
-
-// 19. نمط: سيخ/اسياخ/جريدة/جريده فقط
-if (!foundPattern) {
-    const rodPattern = /(سيخ|اسياخ|جريدة|جريده)/;
-    let rodMatch = processedText.match(rodPattern);
-    if (rodMatch) {
-        quantity = 1;
-        unitType = 'rod';
-        foundPattern = true;
-        console.log(`نمط سيخ فقط: 1 سيخ`);
-    }
-}
-
-// 20. نمط: ابو + رقم (ابو 16، ابو16)
-if (!foundPattern) {
-    const abuPattern = /ابو\s*(\d+)/;
-    let abuMatch = processedText.match(abuPattern);
-    if (abuMatch) {
-        quantity = 1;
-        unitType = 'rod';
-        foundPattern = true;
-        console.log(`نمط أبو: 1 سيخ مقاس ${abuMatch[1]}`);
-    }
-}
-
-// 21. نمط: مقاس + رقم (مقاس 16، مقاس16)
-if (!foundPattern) {
-    const sizePattern = /مقاس\s*(\d+)/;
-    let sizeMatch = processedText.match(sizePattern);
-    if (sizeMatch) {
-        quantity = 1;
-        unitType = 'rod';
-        foundPattern = true;
-        console.log(`نمط مقاس: 1 سيخ مقاس ${sizeMatch[1]}`);
-    }
-}
-
-// 22. نمط: رقم فقط مع مقاس (مثال: 16 - يعني 1 سيخ مقاس 16)
-if (!foundPattern && size) {
-    // البحث عن أرقام في النص
-    const numbers = processedText.match(/\d+(?:\.\d+)?/g);
-    if (numbers && numbers.length === 1) {
-        const num = parseFloat(numbers[0]);
-        // إذا كان الرقم هو المقاس نفسه، فهذا يعني 1 سيخ
-        if (num.toString() === size) {
+    // 23. نمط: سيخ/اسياخ/جريدة/جريده + ابو/مقاس + رقم (سيخ ابو 16، جريدة مقاس 12)
+    if (!foundPattern) {
+        const rodAbuPattern = /(سيخ|اسياخ|جريدة|جريده)\s*(ابو|مقاس)\s*(\d+)/;
+        let rodAbuMatch = processedText.match(rodAbuPattern);
+        if (rodAbuMatch) {
             quantity = 1;
             unitType = 'rod';
             foundPattern = true;
-            console.log(`نمط رقم فقط: 1 سيخ مقاس ${size}`);
+            console.log(`نمط سيخ مع ابو/مقاس: 1 سيخ ${rodAbuMatch[2]} ${rodAbuMatch[3]}`);
         }
     }
-}
-    
+
+    // 24. نمط: سيخ/اسياخ/جريدة/جريده + رقم فقط (سيخ 16، جريدة 12)
+    if (!foundPattern) {
+        const rodWithSizePattern = /(سيخ|اسياخ|جريدة|جريده)\s*(\d+)/;
+        let rodWithSizeMatch = processedText.match(rodWithSizePattern);
+        if (rodWithSizeMatch) {
+            quantity = 1;
+            unitType = 'rod';
+            foundPattern = true;
+            console.log(`نمط سيخ مع مقاس: 1 سيخ مقاس ${rodWithSizeMatch[2]}`);
+        }
+    }
+
+    // 25. نمط: سيخ/اسياخ/جريدة/جريده فقط
+    if (!foundPattern) {
+        const rodPattern = /(سيخ|اسياخ|جريدة|جريده)/;
+        let rodMatch = processedText.match(rodPattern);
+        if (rodMatch) {
+            quantity = 1;
+            unitType = 'rod';
+            foundPattern = true;
+            console.log(`نمط سيخ فقط: 1 سيخ`);
+        }
+    }
+
+    // 26. نمط: ابو + رقم (ابو 16، ابو16)
+    if (!foundPattern) {
+        const abuPattern = /ابو\s*(\d+)/;
+        let abuMatch = processedText.match(abuPattern);
+        if (abuMatch) {
+            quantity = 1;
+            unitType = 'rod';
+            foundPattern = true;
+            console.log(`نمط أبو: 1 سيخ مقاس ${abuMatch[1]}`);
+        }
+    }
+
+    // 27. نمط: مقاس + رقم (مقاس 16، مقاس16)
+    if (!foundPattern) {
+        const sizePattern = /مقاس\s*(\d+)/;
+        let sizeMatch = processedText.match(sizePattern);
+        if (sizeMatch) {
+            quantity = 1;
+            unitType = 'rod';
+            foundPattern = true;
+            console.log(`نمط مقاس: 1 سيخ مقاس ${sizeMatch[1]}`);
+        }
+    }
+
+    // 28. نمط: رقم فقط مع مقاس (مثال: 16 - يعني 1 سيخ مقاس 16)
+    if (!foundPattern && size) {
+        const numbers = processedText.match(/\d+(?:\.\d+)?/g);
+        if (numbers && numbers.length === 1) {
+            const num = parseFloat(numbers[0]);
+            if (num.toString() === size) {
+                quantity = 1;
+                unitType = 'rod';
+                foundPattern = true;
+                console.log(`نمط رقم فقط: 1 سيخ مقاس ${size}`);
+            }
+        }
+    }
+
     // إذا لم يتم العثور على أي نمط ولكن هناك مقاس
     if (!foundPattern && size) {
         quantity = 1;
         unitType = 'rod';
         console.log(`نمط افتراضي: 1 سيخ مقاس ${size}`);
     }
-    
+
     // خامساً: التحقق من وحدة القياس
     if (unitType !== 'ton' && unitType !== 'bundle' && unitType !== 'rod') {
         unitType = 'rod'; // افتراضي
     }
-    
+
     // سادساً: التحقق النهائي من صحة المقاس
     if (size && !steelData.rods[size]) {
         console.log(`المقاس ${size} غير موجود في البيانات`);
         size = null;
     }
-    
+
     console.log(`النتيجة النهائية: ${quantity} ${unitType}, مقاس ${size}`);
-    
+
     return { quantity, unitType, size };
 }
 
-// دالة لتحويل الأرقام العربية المكتوبة إلى أرقام
+// دالة لتحويل الأرقام العربية المكتوبة إلى أرقام - موسعة
 function convertArabicNumberWord(word) {
     const numberWords = {
-        'واحد': 1, 'واحدة': 1,
-        'اثنين': 2, 'اثنان': 2,
-        'ثلاثة': 3, 'ثلاث': 3,
-        'أربعة': 4, 'أربع': 4,
-        'خمسة': 5, 'خمس': 5,
-        'ستة': 6, 'ست': 6,
-        'سبعة': 7, 'سبع': 7,
-        'ثمانية': 8, 'ثمان': 8,
-        'تسعة': 9, 'تسع': 9,
-        'عشرة': 10, 'عشر': 10,
+        // الأعداد المفردة
+        'واحد': 1, 'واحدة': 1, 'احد': 1, 'احدى': 1,
+        'اثنين': 2, 'اثنان': 2, 'اثنتين': 2, 'اثنان': 2,
+        'ثلاثة': 3, 'ثلاث': 3, 'ثلاثه': 3,
+        'أربعة': 4, 'أربع': 4, 'اربع': 4, 'اربعه': 4,
+        'خمسة': 5, 'خمس': 5, 'خمسه': 5,
+        'ستة': 6, 'ست': 6, 'سته': 6,
+        'سبعة': 7, 'سبع': 7, 'سبعه': 7,
+        'ثمانية': 8, 'ثمان': 8, 'ثمانيه': 8,
+        'تسعة': 9, 'تسع': 9, 'تسعه': 9,
+        'عشرة': 10, 'عشر': 10, 'عشره': 10,
+
+        // المضاعفات
         'عشرين': 20, 'عشرون': 20,
         'ثلاثين': 30, 'ثلاثون': 30,
-        'أربعين': 40, 'أربعون': 40,
+        'أربعين': 40, 'اربعين': 40, 'أربعون': 40,
         'خمسين': 50, 'خمسون': 50,
         'ستين': 60, 'ستون': 60,
         'سبعين': 70, 'سبعون': 70,
         'ثمانين': 80, 'ثمانون': 80,
         'تسعين': 90, 'تسعون': 90,
-        'مائة': 100, 'مئة': 100,
-        'مائتين': 200
+
+        // المئات
+        'مائة': 100, 'مئه': 100, 'مئة': 100,
+        'مائتين': 200, 'مئتين': 200
     };
-    
-    return numberWords[word.toLowerCase()] || 1;
+
+    return numberWords[word.toLowerCase()] || null;
 }
 
 // دالة مساعدة لاستخراج المقاس من النص
 function extractSizeFromText(text) {
     const searchText = arabicToEnglish(text.toLowerCase());
-    
+
     // 1. البحث عن مقاس بعد "ابو"
     const abuMatch = searchText.match(/ابو\s*(\d+)/);
     if (abuMatch) {
@@ -2561,7 +2766,7 @@ function extractSizeFromText(text) {
             return size;
         }
     }
-    
+
     // 2. البحث عن مقاس بعد "مقاس"
     const sizeMatch = searchText.match(/مقاس\s*(\d+)/);
     if (sizeMatch) {
@@ -2570,7 +2775,7 @@ function extractSizeFromText(text) {
             return size;
         }
     }
-    
+
     // 3. البحث عن نمط: رقم ثم "م" أو "ملم"
     const mPattern = /(\d+)\s*م(لم)?/;
     const mMatch = searchText.match(mPattern);
@@ -2580,13 +2785,13 @@ function extractSizeFromText(text) {
             return size;
         }
     }
-    
+
     // 4. البحث عن أرقام في النص
     const allSizes = Object.keys(steelData.rods);
-    
+
     // ترتيب الأحجام من الأكبر إلى الأصغر للبحث الدقيق
     allSizes.sort((a, b) => parseInt(b) - parseInt(a));
-    
+
     for (const size of allSizes) {
         // البحث عن الرقم ككلمة منفصلة
         const regex = new RegExp(`\\b${size}\\b`);
@@ -2594,7 +2799,7 @@ function extractSizeFromText(text) {
             return size;
         }
     }
-    
+
     // 5. البحث عن أي رقم قد يكون مقاساً
     const numberMatches = searchText.match(/\b(\d+)\b/g);
     if (numberMatches) {
@@ -2604,7 +2809,7 @@ function extractSizeFromText(text) {
             }
         }
     }
-    
+
     return null;
 }
 
@@ -2612,12 +2817,12 @@ function extractSizeFromText(text) {
 function arabicToEnglish(text) {
     const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
     let result = text;
-    
+
     for (let i = 0; i < arabicDigits.length; i++) {
         const regex = new RegExp(arabicDigits[i], 'g');
         result = result.replace(regex, i.toString());
     }
-    
+
     return result;
 }
 
@@ -2625,7 +2830,7 @@ function arabicToEnglish(text) {
 function convertToRods(quantity, size, unitType) {
     const sizeStr = size.toString();
     let rodsCount = 0;
-    
+
     switch(unitType) {
         case 'ton':
             // استخدم steelData.rods للطن
@@ -2633,7 +2838,7 @@ function convertToRods(quantity, size, unitType) {
             rodsCount = quantity * rodsPerTon;
             console.log(`تحويل طن إلى أسياخ: ${quantity} طن × ${rodsPerTon} سيخ/طن = ${rodsCount} سيخ`);
             break;
-            
+
         case 'bundle':
             // بيانات البنادل
             const bundleSizes = {
@@ -2649,17 +2854,17 @@ function convertToRods(quantity, size, unitType) {
             rodsCount = quantity * rodsPerBundle;
             console.log(`تحويل بندل إلى أسياخ: ${quantity} بندل × ${rodsPerBundle} سيخ/بندل = ${rodsCount} سيخ`);
             break;
-            
+
         case 'rod':
             rodsCount = quantity;
             console.log(`أسياخ مباشرة: ${quantity} سيخ`);
             break;
-            
+
         default:
             rodsCount = quantity;
             console.log(`افتراضي: ${quantity} سيخ`);
     }
-    
+
     return Math.round(rodsCount);
 }
 
@@ -2670,23 +2875,23 @@ function fillInputFields(results) {
         const count = results.gr40[size];
         const inputId = `rod-${size}`;
         const inputElement = document.getElementById(inputId);
-        
+
         if (inputElement) {
             // إذا كان الحقل فارغاً، نملأه بالقيمة الجديدة
             // إذا كان به قيمة، نجمع مع القيمة الموجودة
             const currentValue = parseFloat(inputElement.value) || 0;
             inputElement.value = currentValue + count;
-            
+
             // تشغيل حدث التغيير لتنشيط أي حساب تلقائي
             inputElement.dispatchEvent(new Event('input', { bubbles: true }));
         }
     });
-    
+
     // ملء حقول جريد ٦٠ (إذا كان هناك زر لإضافتها)
     if (Object.keys(results.gr60).length > 0) {
         // نفتح نافذة إضافة جريد ٦٠
         showAddItemDialog();
-        
+
         // ننتظر قليلاً لتحميل الحقول
         setTimeout(() => {
             // نختار نوع جريد ٦٠
@@ -2694,23 +2899,23 @@ function fillInputFields(results) {
             if (itemTypeSelect) {
                 itemTypeSelect.value = 'gr60';
                 itemTypeSelect.dispatchEvent(new Event('change'));
-                
+
                 // ننتظر أكثر قليلاً لتظهر الحقول
                 setTimeout(() => {
                     Object.keys(results.gr60).forEach(size => {
                         const count = results.gr60[size];
                         const inputId = `gr60-${size}`;
                         const inputElement = document.getElementById(inputId);
-                        
+
                         if (inputElement) {
                             inputElement.value = count;
-                            
+
                             // تشغيل حدث التغيير
                             const event = new Event('input', { bubbles: true });
                             inputElement.dispatchEvent(event);
                         }
                     });
-                    
+
                     // نضيف السعر الافتراضي
                     const priceInput = document.getElementById('gr60Price');
                     if (priceInput && !priceInput.value) {
@@ -2726,7 +2931,7 @@ function fillInputFields(results) {
 function showSuccessMessage(results) {
     let message = '✅ تم إدخال البيانات بنجاح:\n\n';
     let totalItems = 0;
-    
+
     // حساب جريد ٤٠
     const gr40Items = Object.keys(results.gr40);
     if (gr40Items.length > 0) {
@@ -2736,7 +2941,7 @@ function showSuccessMessage(results) {
             totalItems += results.gr40[size];
         });
     }
-    
+
     // حساب جريد ٦٠
     const gr60Items = Object.keys(results.gr60);
     if (gr60Items.length > 0) {
@@ -2746,9 +2951,9 @@ function showSuccessMessage(results) {
             totalItems += results.gr60[size];
         });
     }
-    
+
     message += `\nالإجمالي: ${totalItems} سيخ`;
-    
+
     alert(message);
 }
 
@@ -2766,7 +2971,6 @@ document.addEventListener('keydown', function(event) {
         }
     }
 });
-
 
     </script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
