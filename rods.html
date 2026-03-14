@@ -817,6 +817,45 @@ justify-content: center;
     padding: 0;
     flex: none !important;
 }
+        .pure-paste-btn {
+            /* الألوان والتدرج */
+            background: linear-gradient(135deg, #2c3e50, #4ca1af);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: white;
+
+            /* التصميم الدائري */
+            width: 50px; 
+            height: 50px; 
+            border-radius: 50%; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 0;
+            margin: 10px auto; /* يوسط الزر في مكانه */
+
+            /* حركة التوهج (نفس اللي عجبتك) */
+            animation: paste-glow 3s infinite ease-in-out;
+            transition: transform 0.2s;
+        }
+
+        /* تنسيق الأيقونة داخل الزر */
+        .pure-paste-btn svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .pure-paste-btn:active {
+            transform: scale(0.9); /* تأثير الضغط */
+        }
+
+        /* حركة التوهج */
+        @keyframes paste-glow {
+            0% { box-shadow: 0 0 8px rgba(76, 161, 175, 0.4); }
+            50% { box-shadow: 0 0 20px rgba(0, 210, 255, 0.7); }
+            100% { box-shadow: 0 0 8px rgba(76, 161, 175, 0.4); }
+        }
+
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -953,6 +992,12 @@ justify-content: center;
 ‎٢ بندل ابو ١٢
 ‎نص طن ابو ١٤ ضغط ٦٠
 ‎٣ سيخ ابو ٨ جريد ٦٠"></textarea>
+        <button type="button" id="standalonePasteBtn" class="pure-paste-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+            </svg>
+        </button>
 
         <div class="input-info">
 ‎            💡 يفهم: طن، بندل، سيخ، نص، ربع، ابو، مقاس، ضغط ٦٠، جريد ٦٠
@@ -2971,6 +3016,21 @@ document.addEventListener('keydown', function(event) {
         }
     }
 });
+        document.getElementById('standalonePasteBtn').addEventListener('click', async () => {
+            try {
+                const text = await navigator.clipboard.readText();
+                const targetInput = document.getElementById('smartInputText'); // تأكد أن ID الخانة عندك هو rodPrice
+
+                if (text) {
+                    targetInput.value = text;
+                    // ومضة خفيفة للخانة ليعرف المستخدم أن اللصق تم
+                    targetInput.style.backgroundColor = "rgba(76, 161, 175, 0.1)";
+                    setTimeout(() => targetInput.style.backgroundColor = "", 400);
+                }
+            } catch (err) {
+                console.error("فشل اللصق: ", err);
+            }
+        });
 
     </script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
