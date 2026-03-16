@@ -52,6 +52,7 @@ function openDB() {
   });
 }
 
+
 // INSTALL - تثبيت وتخزين الملفات الأساسية
 self.addEventListener('install', (event) => {
   event.waitUntil(
