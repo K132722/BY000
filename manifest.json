@@ -1,8 +1,8 @@
 {
-  "name": "حاسبة الحديد",
-  "short_name": "مؤسسة بناء اليمن",
-  "start_url": "/BY000/index.html",
-  "scope": "/BY000/",
+  "name": "مؤسسة بناء اليمن للتجارة",
+  "short_name": "بناء اليمن",
+  "start_url": "/index.html",          // ✅ غيرها من /BY000/index.html إلى /index.html
+  "scope": "/",                         // ✅ غيرها من /BY000/ إلى /
   "display": "standalone",
   "background_color": "#1b263b",
   "theme_color": "#0D1729",
