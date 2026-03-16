@@ -3,19 +3,19 @@
   "short_name": "بناء اليمن",
   "start_url": "/index.html",
   "scope": "/",
-  "display": "standalone",          // ✅ تأكد أنها standalone
+  "display": "standalone",
   "background_color": "#1b263b",
   "theme_color": "#0D1729",
   "description": "تطبيق لحساب أسعار الحديد والعمال وصندوق أبو جراح",
   "icons": [
     {
-      "src": "/android-chrome-192x192.png",  // ✅ مهم جداً وجود "/" في البداية
+      "src": "/android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/android-chrome-512x512.png",  // ✅ نفس الشيء هنا
+      "src": "/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -23,7 +23,7 @@
   ],
   "lang": "ar",
   "dir": "rtl",
-  "orientation": "portrait",        // ✅ portrait أفضل للتطبيقات
+  "orientation": "portrait",
   "categories": ["business", "utilities"],
   "prefer_related_applications": false
 }
