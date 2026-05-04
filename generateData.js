@@ -14,7 +14,7 @@ async function updateDataJson() {
   const blob = new Blob([JSON.stringify(allData)], { type: 'application/json' });
   const response = new Response(blob);
 
-  const cache = await caches.open('bina-yemen-v18');
+  const cache = await caches.open('bina-yemen-v31');
   await cache.put('/data.json', response);
 }
 
