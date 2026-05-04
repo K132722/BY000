@@ -6,7 +6,7 @@
     <title>صندوق أبو جراح</title>
     <link rel="manifest" href="manifest.json">
     <!-- إضافة مكتبة jsPDF لإنشاء PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="./jspdf.umd.min.js"></script>
     <style>
         :root {
             --primary-dark: #0a1423;
@@ -560,7 +560,7 @@
             100% { transform: rotate(360deg); }
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="./fonts/tajawal/tajawal.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -1196,7 +1196,7 @@ function generatePDF() {
             <head>
                 <meta charset="UTF-8">
                 <title>${title}</title>
-                <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+                <link href="./fonts/tajawal/tajawal.css" rel="stylesheet">
                 <style>
                     * {
                         margin: 0;

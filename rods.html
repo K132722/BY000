@@ -857,8 +857,8 @@ justify-content: center;
         }
 
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="./fonts/tajawal/tajawal.css" rel="stylesheet">
+    <link rel="stylesheet" href="./fa-local.css">
     <link rel="stylesheet" href="calculator.css">
 </head>
 <body>
@@ -1997,7 +1997,7 @@ document.getElementById('rodsNote').innerText = priceNote;
 
             if (typeof html2canvas !== 'function') {
                 const script = document.createElement('script');
-                script.src = 'https://html2canvas.hertzen.com/dist/html2canvas.min.js';
+                script.src = './html2canvas.min.js';
                 script.onload = function () {
                     captureAndShare(resultElement, originalScroll, originalDisplay);
                 };
@@ -3033,7 +3033,7 @@ document.addEventListener('keydown', function(event) {
         });
 
     </script>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="./html2canvas.min.js"></script>
     <!-- تضمين ملف الآلة الحاسبة -->
     <script src="calculator.js"></script>
 </body>
